@@ -1,13 +1,23 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import './registerServiceWorker';
+import setupApp from '@/modules/app/setup';
+import setupFirebase from '@/modules/firebase/setup';
+import setupRouter from '@/modules/router/setup';
+import setupStore from '@/modules/store/setup';
+import setupVuetify from '@/modules/vuetify/setup';
+import setupPwa from '@/modules/pwa/setup';
+import setupAuth from '@/modules/auth/setup';
+import setupHelloword from '@/modules/helloworld/setup';
 
-Vue.config.productionTip = false;
+const vuetify = setupVuetify();
+const router = setupRouter();
+const store = setupStore();
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
+setupFirebase();
+setupPwa();
+setupHelloword(router);
+setupAuth(router, store, () => {
+    setupApp(
+        router,
+        store,
+        vuetify,
+    ).$mount('#app');
+});
