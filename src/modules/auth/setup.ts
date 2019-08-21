@@ -1,8 +1,7 @@
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import * as firebase from 'firebase/app';
 import { User } from 'firebase/app';
-import 'firebase/auth';
+import { auth } from '@/modules/firebase';
 import { RootState } from '../store/types';
 import { storeConfig } from './store';
 import Login from './views/Login.vue';
@@ -36,6 +35,6 @@ export default (router: VueRouter, store: Store<RootState>, onAuthStateChanged?:
         }
     });
     if (onAuthStateChanged) {
-        firebase.auth().onAuthStateChanged(onAuthStateChanged);
+        auth().onAuthStateChanged(onAuthStateChanged);
     }
 };

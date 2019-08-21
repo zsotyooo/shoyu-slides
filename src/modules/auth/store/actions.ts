@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import firebase, { User, UserInfo } from 'firebase/app';
-import 'firebase/auth';
+import { auth } from '@/modules/firebase';
 import { RootState } from '@/modules/store/types';
 import { AuthState, EmailAuthCredentials } from '../types';
 
@@ -15,7 +15,7 @@ const retrieveUserInfo = (user: User): UserInfo => ({
 
 export const actions: ActionTree<AuthState, RootState> = {
     setUserFromFirebaseAction({ commit }) {
-        const user = firebase.auth().currentUser;
+        const user = auth().currentUser;
         if (user) {
             commit('setUser', retrieveUserInfo(user));
         } else {
@@ -25,7 +25,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     signUpAction({ commit }, payload: EmailAuthCredentials) {
         commit('setStatus', 'loading');
-        firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        auth().createUserWithEmailAndPassword(payload.email, payload.password)
             .then((response) => {
                 if (response.user) {
                     commit('setUser', retrieveUserInfo(response.user));
@@ -42,7 +42,7 @@ export const actions: ActionTree<AuthState, RootState> = {
     },
 
     signInAction({ commit }, payload: EmailAuthCredentials) {
-        firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        auth().signInWithEmailAndPassword(payload.email, payload.password)
             .then((response) => {
                 if (response.user) {
                     commit('setUser', retrieveUserInfo(response.user));
@@ -60,7 +60,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     signInWithGoogleAction({ commit }) {
         const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
+        auth().signInWithPopup(provider)
             .then((response) => {
                 if (response.user) {
                     commit('setUser', retrieveUserInfo(response.user));
@@ -78,7 +78,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     signInWithFacebookAction({ commit }) {
         const provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider)
+        auth().signInWithPopup(provider)
             .then((response) => {
                 if (response.user) {
                     commit('setUser', retrieveUserInfo(response.user));
@@ -95,7 +95,7 @@ export const actions: ActionTree<AuthState, RootState> = {
     },
 
     signOutAction({ commit }) {
-        firebase.auth().signOut()
+        auth().signOut()
             .then((response) => {
                 commit('removeUser');
                 commit('setStatus', 'success');

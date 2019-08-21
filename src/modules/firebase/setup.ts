@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebaseService from '.';
 
 const config = {
     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -9,4 +9,4 @@ const config = {
     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGE_SENDER_ID,
 };
 
-export default () => firebase.initializeApp(config);
+export default () => firebaseService.initApp(config);
