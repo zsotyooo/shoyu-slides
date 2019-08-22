@@ -1,13 +1,12 @@
 import { MutationTree } from 'vuex';
-import { UserInfo } from 'firebase';
-import { AuthState, AuthStatus } from '../types';
+import { AuthUser, AuthState, AuthStatus } from '../types';
 
 export const mutations: MutationTree<AuthState> = {
-    setUser(state, payload: UserInfo | null) {
+    setAuthUser(state, payload: AuthUser | null) {
         state.user = payload;
     },
 
-    removeUser(state) {
+    removeAuthUser(state) {
         state.user = null;
     },
 

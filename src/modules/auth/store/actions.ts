@@ -1,114 +1,103 @@
-import { ActionTree } from 'vuex';
+import { ActionTree, Store, Commit } from 'vuex';
 import firebase, { User, UserInfo } from 'firebase/app';
-import { auth } from '@/modules/firebase';
-import { RootState } from '@/modules/store/types';
-import { AuthState, EmailAuthCredentials } from '../types';
+import { RootState } from '@/modules/store';
+import { getCurrentUser, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signInWithPopup, signOut } from '../services/firebase';
+import { AuthState, EmailAuthCredentials } from '../';
 
-const retrieveUserInfo = (user: User): UserInfo => ({
-    displayName: user.displayName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    photoURL: user.photoURL,
-    providerId: user.providerId,
-    uid: user.uid,
-});
+const signInWithProvider = async (commit: Commit, provider: firebase.auth.AuthProvider) => {
+    commit('setStatus', 'loading');
+    try {
+        const user = await signInWithPopup(provider);
+        if (user) {
+            commit('setAuthUser', user);
+        } else {
+            commit('removeAuthUser');
+        }
+        commit('setStatus', 'success');
+        commit('setError', null);
+        return Promise.resolve(user);
+    } catch (e) {
+        commit('setStatus', 'failure');
+        commit('setError', e.message);
+        return Promise.reject(e);
+    }
+};
 
 export const actions: ActionTree<AuthState, RootState> = {
-    setUserFromFirebaseAction({ commit }) {
-        const user = auth().currentUser;
+    syncAuthUserAction({ commit }) {
+        const user = getCurrentUser();
         if (user) {
-            commit('setUser', retrieveUserInfo(user));
+            commit('setAuthUser', user);
         } else {
-            commit('removeUser');
+            commit('removeAuthUser');
         }
     },
 
-    signUpAction({ commit }, payload: EmailAuthCredentials) {
+    async signUpAction({ commit }, payload: EmailAuthCredentials) {
         commit('setStatus', 'loading');
-        auth().createUserWithEmailAndPassword(payload.email, payload.password)
-            .then((response) => {
-                if (response.user) {
-                    commit('setUser', retrieveUserInfo(response.user));
-                } else {
-                    commit('removeUser');
-                }
-                commit('setStatus', 'success');
-                commit('setError', null);
-            })
-            .catch((error) => {
-                commit('setStatus', 'failure');
-                commit('setError', error.message);
-            });
+        try {
+            const user = await createUserWithEmailAndPassword(payload);
+            if (user) {
+                commit('setAuthUser', user);
+            } else {
+                commit('removeAuthUser');
+            }
+            commit('setStatus', 'success');
+            commit('setError', null);
+            return Promise.resolve(user);
+        } catch (e) {
+            commit('setStatus', 'failure');
+            commit('setError', e.message);
+            return Promise.reject(e);
+        }
     },
 
-    signInAction({ commit }, payload: EmailAuthCredentials) {
-        auth().signInWithEmailAndPassword(payload.email, payload.password)
-            .then((response) => {
-                if (response.user) {
-                    commit('setUser', retrieveUserInfo(response.user));
-                } else {
-                    commit('removeUser');
-                }
-                commit('setStatus', 'success');
-                commit('setError', null);
-            })
-            .catch((error) => {
-                commit('setStatus', 'failure');
-                commit('setError', error.message);
-            });
+    async signInAction({ commit }, payload: EmailAuthCredentials) {
+        commit('setStatus', 'loading');
+        try {
+            const user = await signInWithEmailAndPassword(payload);
+            if (user) {
+                commit('setAuthUser', user);
+            } else {
+                commit('removeAuthUser');
+            }
+            commit('setStatus', 'success');
+            commit('setError', null);
+            return Promise.resolve(user);
+        } catch (e) {
+            commit('setStatus', 'failure');
+            commit('setError', e.message);
+            return Promise.reject(e);
+        }
     },
 
-    signInWithGoogleAction({ commit }) {
+    async signInWithGoogleAction({ commit }) {
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth().signInWithPopup(provider)
-            .then((response) => {
-                if (response.user) {
-                    commit('setUser', retrieveUserInfo(response.user));
-                } else {
-                    commit('removeUser');
-                }
-                commit('setStatus', 'success');
-                commit('setError', null);
-            })
-            .catch((error) => {
-                commit('setStatus', 'failure');
-                commit('setError', error.message);
-            });
+        return signInWithProvider(commit, provider);
     },
 
-    signInWithFacebookAction({ commit }) {
+    async signInWithFacebookAction({ commit }) {
         const provider = new firebase.auth.FacebookAuthProvider();
-        auth().signInWithPopup(provider)
-            .then((response) => {
-                if (response.user) {
-                    commit('setUser', retrieveUserInfo(response.user));
-                } else {
-                    commit('removeUser');
-                }
-                commit('setStatus', 'success');
-                commit('setError', null);
-            })
-            .catch((error) => {
-                commit('setStatus', 'failure');
-                commit('setError', error.message);
-            });
+        return signInWithProvider(commit, provider);
     },
 
-    signOutAction({ commit }) {
-        auth().signOut()
-            .then((response) => {
-                commit('removeUser');
-                commit('setStatus', 'success');
-                commit('setError', null);
-            })
-            .catch((error) => {
-                commit('setStatus', 'failure');
-                commit('setError', error.message);
-            });
+    async signOutAction({ commit }) {
+        try {
+            await signOut();
+            commit('removeAuthUser');
+            commit('setStatus', 'success');
+            commit('setError', null);
+            return Promise.resolve();
+        } catch (e) {
+            commit('setStatus', 'failure');
+            commit('setError', e.message);
+            return Promise.reject();
+        }
     },
 
-    signOutLightAction({ commit }) {
-        commit('removeUser');
+    async signOutLightAction({ commit }) {
+        commit('removeAuthUser');
         commit('setStatus', 'success');
         commit('setError', null);
     },

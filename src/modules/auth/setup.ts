@@ -1,12 +1,15 @@
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { User } from 'firebase/app';
-import { auth } from '@/modules/firebase';
-import { RootState } from '../store/types';
+import { RootState } from '../store';
+import { onAuthStateChanged } from './services/firebase';
 import { storeConfig } from './store';
+import { AuthUser } from '.';
 import Login from './views/Login.vue';
 
-export default (router: VueRouter, store: Store<RootState>, onAuthStateChanged?: (user?: User | null) => void) => {
+export default (
+    router: VueRouter,
+    store: Store<RootState>,
+    onAuthStateChangedCallback?: (user?: AuthUser | null) => void) => {
     router.addRoutes([
         {
             path: '/login',
@@ -27,14 +30,14 @@ export default (router: VueRouter, store: Store<RootState>, onAuthStateChanged?:
 
     router.beforeEach((to, from, next) => {
         const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-        store.dispatch('auth/setUserFromFirebaseAction');
+        store.dispatch('auth/syncAuthUserAction');
         if (requiresAuth && !store.getters['auth/isLoggedIn']) {
             next('login');
         } else {
             next();
         }
     });
-    if (onAuthStateChanged) {
-        auth().onAuthStateChanged(onAuthStateChanged);
+    if (onAuthStateChangedCallback) {
+        onAuthStateChanged(onAuthStateChangedCallback);
     }
 };

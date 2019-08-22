@@ -1,19 +1,18 @@
 import { Module } from 'vuex';
-import { RootState } from '@/modules/store';
-import { AuthState } from '../';
+import { RootState } from '@/modules/store/types';
+import { UserState } from '../types';
 import { getters } from './getters';
 import { mutations } from './mutations';
 import { actions } from './actions';
 
 const namespaced = true;
 
-const state: AuthState = {
-    user: null,
-    status: null,
-    error: null,
+const state: UserState = {
+    users: null,
+    currentUser: null,
 };
 
-export const storeConfig: Module<AuthState, RootState> = {
+export const storeConfig: Module<UserState, RootState> = {
     namespaced,
     state,
     getters,

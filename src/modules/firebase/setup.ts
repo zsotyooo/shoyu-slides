@@ -1,4 +1,4 @@
-import firebaseService from '.';
+import firebaseService from './services/service';
 
 const config = {
     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,

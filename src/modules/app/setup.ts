@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { RootState } from '../store/types';
+import { RootState } from '../store';
 import { Vuetify } from 'vuetify';
 import LayoutEmpty from './layout/LayoutEmpty.vue';
 import FormCard from './components/FormCard.vue';

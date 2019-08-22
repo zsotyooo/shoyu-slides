@@ -1,10 +1,9 @@
 import { GetterTree } from 'vuex';
-import { UserInfo } from 'firebase';
-import { RootState } from '@/modules/store/types';
-import { AuthState, AuthStatus } from '../types';
+import { RootState } from '@/modules/store';
+import { AuthState, AuthUser, AuthStatus } from '../';
 
 export const getters: GetterTree<AuthState, RootState> = {
-  user(state): UserInfo | null {
+  authUser(state): AuthUser | null {
     const { user } = state;
     return user;
   },

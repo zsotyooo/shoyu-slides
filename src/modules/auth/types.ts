@@ -1,9 +1,7 @@
-import { UserInfo } from 'firebase';
+import { UserInfo} from 'firebase';
+export { EmailAuthCredentials } from '@/modules/firebase/types';
 
-export interface EmailAuthCredentials {
-    email: string;
-    password: string;
-}
+export type AuthUser = UserInfo;
 
 export type AuthStatus = 'success' | 'failure';
 
