@@ -1,5 +1,5 @@
 import firebase, { User, UserInfo } from 'firebase/app';
-import { EmailAuthCredentials } from '../';
+import { EmailAuthCredentials } from '..';
 
 const convertUserToUserInfo = (user: firebase.User): UserInfo => ({
     displayName: user.displayName,

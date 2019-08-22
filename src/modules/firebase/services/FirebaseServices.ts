@@ -2,16 +2,16 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
-import { DbService } from './db';
-import { AuthService } from './auth';
+import { DbService } from './DbService';
+import { AuthService } from './AuthService';
 
-export class FirebaseService {
+export class FirebaseServices {
     private app: firebase.app.App;
     private firestore: firebase.firestore.Firestore;
     private auth: AuthService;
     private db: DbService;
 
-    public initApp(config: {[index: string]: string}) {
+    public init(config: {[index: string]: string}) {
         if (!this.app) {
             this.app = firebase.initializeApp(config);
             this.firestore = this.app.firestore();
@@ -33,7 +33,7 @@ export class FirebaseService {
     }
 }
 
-const firebaseService = new FirebaseService();
+const firebaseService = new FirebaseServices();
 
 export default firebaseService;
 export const app = () => firebaseService.getApp();

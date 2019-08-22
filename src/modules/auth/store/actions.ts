@@ -1,5 +1,5 @@
-import { ActionTree, Store, Commit } from 'vuex';
-import firebase, { User, UserInfo } from 'firebase/app';
+import { ActionTree, Commit } from 'vuex';
+import firebase from 'firebase/app';
 import { RootState } from '@/modules/store';
 import { getCurrentUser, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     signInWithPopup, signOut } from '../services/firebase';

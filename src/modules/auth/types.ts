@@ -3,7 +3,7 @@ export { EmailAuthCredentials } from '@/modules/firebase/types';
 
 export type AuthUser = UserInfo;
 
-export type AuthStatus = 'success' | 'failure';
+export type AuthStatus = 'success' | 'failure' | 'loading';
 
 export interface AuthState {
     user: UserInfo | null;
