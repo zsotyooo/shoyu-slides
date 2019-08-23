@@ -1,22 +1,24 @@
 import { ActionTree } from 'vuex';
-import { UserInfo } from 'firebase/app';
+import { AuthUser } from '@/modules/auth/types';
 import { RootState } from '@/modules/store/types';
-import { fetchUser, saveUser } from '../service/firebase';
-import { User, UserState } from '../types';
+import { User, UserState, UserService } from '../types';
+import { userService } from '../services';
 
-const convertAuthUserInfoToUser = (user: UserInfo): User => ({
+const convertAuthUserInfoToUser = (user: AuthUser): User => ({
     displayName: user.displayName || '',
     photoUrl: user.photoURL || '',
     uid: user.uid,
 });
 
 export const actions: ActionTree<UserState, RootState> = {
-    async setCurrentUser({ commit }, authUser: UserInfo | null) {
+    async setCurrentUser({ commit }, authUser: AuthUser | null) {
         if (authUser) {
             try {
-                let userDoc = await fetchUser(authUser.uid);
+                let userDoc = await userService()
+                    .fetchUser(authUser.uid);
                 if (!userDoc) {
-                    userDoc = await saveUser({ id: authUser.uid, data: convertAuthUserInfoToUser(authUser) });
+                    userDoc = await userService()
+                        .saveUser({ id: authUser.uid, data: convertAuthUserInfoToUser(authUser) });
                 }
                 commit('setCurrentUser', userDoc.data);
             } catch (e) {

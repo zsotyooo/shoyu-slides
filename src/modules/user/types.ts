@@ -1,4 +1,3 @@
-import { UserInfo } from 'firebase';
 import { Document } from '@/modules/firebase/types';
 
 export interface User {
@@ -14,4 +13,9 @@ export interface UserDocument extends Document {
 export interface UserState {
     users: User[] | null;
     currentUser: User | null;
+}
+
+export interface UserService {
+    fetchUser: (uid: string) => Promise<false | UserDocument>;
+    saveUser: (user: UserDocument) => Promise<UserDocument>;
 }

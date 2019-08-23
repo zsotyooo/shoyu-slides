@@ -48,7 +48,6 @@
 <script lang="ts">
 import { Component, Emit, Ref, Vue, Watch, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { EmailAuthCredentials } from '../types';
 import LoginWithGoogle from '../components/LoginWithGoogle.vue';
 import LoginWithFacebook from '../components/LoginWithFacebook.vue';
 import LoginWithEmail from '../components/LoginWithEmail.vue';

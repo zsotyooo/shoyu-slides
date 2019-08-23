@@ -11,7 +11,6 @@
 <script lang="ts">
 import { Component, Emit, Ref, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { EmailAuthCredentials } from '../';
 
 const { Action } = namespace('auth');
 

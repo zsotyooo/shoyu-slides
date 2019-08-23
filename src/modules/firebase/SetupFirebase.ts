@@ -1,3 +1,4 @@
+import { Setup, Application } from '@/modules/core';
 import firebaseServices from './services/FirebaseServices';
 
 const config = {
@@ -9,4 +10,9 @@ const config = {
     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGE_SENDER_ID,
 };
 
-export default () => firebaseServices.init(config);
+export class SetupFirebase implements Setup {
+    public setup(app: Application) {
+        firebaseServices.init(config);
+        return Promise.resolve();
+    }
+}

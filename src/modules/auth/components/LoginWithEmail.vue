@@ -33,13 +33,13 @@
 <script lang="ts">
 import { Component, Emit, Ref, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { EmailAuthCredentials } from '../';
+import { EmailPasswordCredentials } from '../';
 
 const { Action } = namespace('auth');
 
 @Component({})
 export default class LoginWithEmail extends Vue {
-    @Action private signInAction!: (payload: EmailAuthCredentials) => void;
+    @Action private signInAction!: (payload: EmailPasswordCredentials) => void;
     @Action private signOutLightAction!: () => void;
 
     @Ref() private readonly form!: Vue & { validate: () => boolean, reset: () => void };

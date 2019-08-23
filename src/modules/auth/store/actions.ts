@@ -1,14 +1,12 @@
 import { ActionTree, Commit } from 'vuex';
-import firebase from 'firebase/app';
 import { RootState } from '@/modules/store';
-import { getCurrentUser, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    signInWithPopup, signOut } from '../services/firebase';
-import { AuthState, EmailAuthCredentials } from '../';
+import { AuthState, EmailPasswordCredentials } from '../';
+import { authService } from '../services';
 
-const signInWithProvider = async (commit: Commit, provider: firebase.auth.AuthProvider) => {
+const signInWithProvider = async (commit: Commit, provider: any) => {
     commit('setStatus', 'loading');
     try {
-        const user = await signInWithPopup(provider);
+        const user = await authService().signInWithPopup(provider);
         if (user) {
             commit('setAuthUser', user);
         } else {
@@ -26,7 +24,7 @@ const signInWithProvider = async (commit: Commit, provider: firebase.auth.AuthPr
 
 export const actions: ActionTree<AuthState, RootState> = {
     syncAuthUserAction({ commit }) {
-        const user = getCurrentUser();
+        const user = authService().getCurrentUser();
         if (user) {
             commit('setAuthUser', user);
         } else {
@@ -34,10 +32,10 @@ export const actions: ActionTree<AuthState, RootState> = {
         }
     },
 
-    async signUpAction({ commit }, payload: EmailAuthCredentials) {
+    async signUpAction({ commit }, payload: EmailPasswordCredentials) {
         commit('setStatus', 'loading');
         try {
-            const user = await createUserWithEmailAndPassword(payload);
+            const user = await authService().createUserWithEmailAndPassword(payload);
             if (user) {
                 commit('setAuthUser', user);
             } else {
@@ -53,10 +51,10 @@ export const actions: ActionTree<AuthState, RootState> = {
         }
     },
 
-    async signInAction({ commit }, payload: EmailAuthCredentials) {
+    async signInAction({ commit }, payload: EmailPasswordCredentials) {
         commit('setStatus', 'loading');
         try {
-            const user = await signInWithEmailAndPassword(payload);
+            const user = await authService().signInWithEmailAndPassword(payload);
             if (user) {
                 commit('setAuthUser', user);
             } else {
@@ -73,18 +71,18 @@ export const actions: ActionTree<AuthState, RootState> = {
     },
 
     async signInWithGoogleAction({ commit }) {
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = authService().getGoogleAuthProvider();
         return signInWithProvider(commit, provider);
     },
 
     async signInWithFacebookAction({ commit }) {
-        const provider = new firebase.auth.FacebookAuthProvider();
+        const provider = authService().getFacebookAuthProvider();
         return signInWithProvider(commit, provider);
     },
 
     async signOutAction({ commit }) {
         try {
-            await signOut();
+            await authService().signOut();
             commit('removeAuthUser');
             commit('setStatus', 'success');
             commit('setError', null);

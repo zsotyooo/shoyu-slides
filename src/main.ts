@@ -1,25 +1,8 @@
-import setupApp from '@/modules/app/setup';
-import setupFirebase from '@/modules/firebase/setup';
-import setupRouter from '@/modules/router/setup';
-import setupStore from '@/modules/store/setup';
-import setupVuetify from '@/modules/vuetify/setup';
-import setupPwa from '@/modules/pwa/setup';
-import setupAuth from '@/modules/auth/setup';
-import setupUser from '@/modules/user/setup';
-import setupHelloword from '@/modules/helloworld/setup';
+import 'reflect-metadata';
 
-const vuetify = setupVuetify();
-const router = setupRouter();
-const store = setupStore();
+import './config';
+import { di } from '@/modules/core/di';
+import { Application } from '@/modules/core';
 
-setupFirebase();
-setupPwa();
-setupHelloword(router);
-setupUser(store);
-setupAuth(router, store, () => {
-    setupApp(
-        router,
-        store,
-        vuetify,
-    ).$mount('#app');
-});
+const theApp = di.getService<Application>('app');
+theApp.run(di.getModuleSetups());
