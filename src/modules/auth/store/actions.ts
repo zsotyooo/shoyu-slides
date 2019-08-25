@@ -1,7 +1,6 @@
 import { ActionTree, Commit } from 'vuex';
 import { RootState } from '@/modules/store';
-import { AuthState, EmailPasswordCredentials } from '../';
-import { authService } from '../services';
+import { authService, AuthState, EmailPasswordCredentials } from '..';
 
 const signInWithProvider = async (commit: Commit, provider: any) => {
     commit('setStatus', 'loading');

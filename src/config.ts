@@ -2,7 +2,7 @@
 import firebase from 'firebase/app';
 import { di } from '@/modules/core/di';
 import { Application } from '@/modules/core';
-import { SinglePageApp } from '@/modules/app/SinglePageApp';
+import { SinglePageApp } from '@/modules/core/apps/SinglePageApp';
 import { UserService } from '@/modules/user';
 import { FirebaseUserService } from '@/modules/user/services/FirebaseUserService';
 import { AuthService } from '@/modules/auth';

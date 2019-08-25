@@ -7,7 +7,7 @@ export type SetupFn = (app: Application) => void;
 
 export interface Application {
     mount: (component: VueConstructor, place: string | Element | undefined) => void;
-    run: (setups: Array<(app: Application) => void>) => void;
+    run: (appComponent: VueConstructor, setups: Array<(app: Application) => void>) => void;
     setStore: (store: Store<RootState>) => void;
     getStore: () => Store<RootState>;
     setRouter: (router: VueRouter) => void;

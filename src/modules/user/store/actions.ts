@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex';
 import { AuthUser } from '@/modules/auth/types';
 import { RootState } from '@/modules/store/types';
 import { User, UserState, UserService } from '../types';
-import { userService } from '../services';
+import { userService } from '..';
 
 const convertAuthUserInfoToUser = (user: AuthUser): User => ({
     displayName: user.displayName || '',

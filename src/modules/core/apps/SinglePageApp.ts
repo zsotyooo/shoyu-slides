@@ -4,8 +4,7 @@ import VueRouter from 'vue-router';
 import { Store } from 'vuex';
 import { Application } from '@/modules/core';
 import { RootState } from '@/modules/store';
-import AppComponent from './App.vue';
-import { authService } from '../auth/services';
+import { authService } from '@/modules/auth';
 
 @injectable()
 export class SinglePageApp implements Application {
@@ -70,13 +69,13 @@ export class SinglePageApp implements Application {
         }).$mount(place);
     }
 
-    public async run(setups: Array<(app: Application) => void>) {
+    public async run(appComponent: VueConstructor, setups: Array<(app: Application) => void>) {
         if (!this.executed) {
             setups.map(async (setup) => {
                 await setup(this);
             });
 
-            authService().onAuthStateChanged(() => this.mount(AppComponent as VueConstructor, '#app'));
+            authService().onAuthStateChanged(() => this.mount(appComponent, '#app'));
 
             this.executed = true;
         }

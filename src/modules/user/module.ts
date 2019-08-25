@@ -1,6 +1,6 @@
 import { storeConfig } from './store';
 import { Application } from '@/modules/core';
-import { authService } from '@/modules/auth/services';
+import { authService } from '@/modules/auth';
 
 export default () => ({
     dependencies: ['router', 'store', 'auth'],
