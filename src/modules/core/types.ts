@@ -3,9 +3,7 @@ import VueRouter from 'vue-router';
 import { Store } from 'vuex';
 import { RootState } from '../store';
 
-export interface Setup {
-    setup: (app: Application) => Promise<void>;
-}
+export type SetupFn = (app: Application) => void;
 
 export interface Application {
     mount: (component: VueConstructor, place: string | Element | undefined) => void;
@@ -21,5 +19,5 @@ export interface Application {
 export interface Module {
     name: string;
     dependencies?: string[];
-    setup: (app: Application) => void;
+    setup?: SetupFn;
 }

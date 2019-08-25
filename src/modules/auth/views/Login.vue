@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <layout-empty>
+        <admin-layout-logo>
             <v-subheader>Sign in or register with one click</v-subheader>
             <v-divider></v-divider>
             <login-with-google></login-with-google>
@@ -8,9 +8,9 @@
             <v-subheader>Sing in using Email and Password</v-subheader>
             <v-divider></v-divider>
             <v-container>
-                <v-tabs>
-                    <v-tab>Sign in</v-tab>
-                    <v-tab>Register</v-tab>
+                <v-tabs icons-and-text dark>
+                    <v-tab>Sign in<v-icon>mdi-login-variant</v-icon></v-tab>
+                    <v-tab>Register<v-icon>mdi-account-plus-outline</v-icon></v-tab>
                     <v-tab-item>
                         <login-with-email></login-with-email>
                     </v-tab-item>
@@ -41,7 +41,7 @@
                     </v-btn>
                 </v-snackbar>
             </template>
-        </layout-empty>
+        </admin-layout-logo>
     </div>
 </template>
 

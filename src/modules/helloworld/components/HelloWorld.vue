@@ -86,6 +86,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+// import json from 'url-loader!module!@/assets/bodymovin/error-404.json';
 
 export default Vue.extend({
   data: () => ({

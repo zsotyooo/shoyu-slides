@@ -1,7 +1,10 @@
 import { Application } from '@/modules/core';
-import { SetupPwa } from './SetupPwa';
+import registerServiceWorker from './registerServiceWorker';
 
 export default () => ({
     name: 'pwa',
-    setup: (app: Application) => (new SetupPwa()).setup(app),
+    setup: (app: Application) => {
+        registerServiceWorker();
+        return Promise.resolve();
+    },
 });

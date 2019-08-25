@@ -31,7 +31,9 @@ class DiService {
             throw new Error(`${mod.name} has a missing dependency`);
         }
         this.installedModules.push(mod.name);
-        this.setups.push(mod.setup);
+        if (mod.setup) {
+            this.setups.push(mod.setup);
+        }
     }
 
     public getModuleSetups() {

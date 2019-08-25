@@ -1,9 +1,9 @@
 <template>
-  <layout-empty>
+  <admin-layout-logo>
     <div class="about">
       <current-user></current-user>
     </div>
-  </layout-empty>
+  </admin-layout-logo>
 </template>
 
 <script lang="ts">

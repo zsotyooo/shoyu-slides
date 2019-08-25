@@ -13,6 +13,7 @@
                     v-model="email"
                     :rules="emailRules"
                     label="E-mail"
+                    prepend-icon="mdi-account"
                     required
                 ></v-text-field>
 
@@ -22,6 +23,7 @@
                     label="Password"
                     required
                     :append-icon="passwordShow ? 'visibility' : 'visibility_off'"
+                    prepend-icon="mdi-lock"
                     :type="passwordShow ? 'text' : 'password'"
                     @click:append="togglePasswordShow"
                 ></v-text-field>

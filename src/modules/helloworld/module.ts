@@ -1,8 +1,11 @@
 import { Application } from '@/modules/core';
-import { SetupHelloworld } from './SetupHelloworld';
+import routes from './routes';
 
 export default () => ({
     dependencies: ['router', 'vuetify'],
     name: 'helloworld',
-    setup: (app: Application) => (new SetupHelloworld()).setup(app),
+    setup: (app: Application) => {
+        app.getRouter().addRoutes(routes);
+        return Promise.resolve();
+    },
 });

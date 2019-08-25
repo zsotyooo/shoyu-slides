@@ -13,6 +13,7 @@
                     v-model="email"
                     :rules="emailRules"
                     label="E-mail"
+                    prepend-icon="mdi-account"
                     required
                 ></v-text-field>
 
@@ -22,17 +23,19 @@
                     label="Password"
                     required
                     :append-icon="passwordShow ? 'visibility' : 'visibility_off'"
+                    prepend-icon="mdi-lock"
                     :type="passwordShow ? 'text' : 'password'"
                     @click:append="togglePasswordShow"
                 ></v-text-field>
 
                 <v-text-field
                     v-model="confirmPassword"
-                    label="confirm Password"
+                    label="Confirm Password"
                     :rules="getConfirmPasswordRules()"
                     required
                     :append-icon="confirmPasswordShow ? 'visibility' : 'visibility_off'"
                     :type="confirmPasswordShow ? 'text' : 'password'"
+                    prepend-icon="mdi-lock-question"
                     @click:append="toggleConfirmPasswordShow"
                 ></v-text-field>
             </v-form>

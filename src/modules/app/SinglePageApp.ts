@@ -2,9 +2,10 @@ import { injectable } from 'inversify';
 import Vue, { VueConstructor } from 'vue';
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { Application, Setup } from '@/modules/core';
+import { Application } from '@/modules/core';
 import { RootState } from '@/modules/store';
 import AppComponent from './App.vue';
+import { authService } from '../auth/services';
 
 @injectable()
 export class SinglePageApp implements Application {
@@ -53,6 +54,12 @@ export class SinglePageApp implements Application {
         const features = this.features;
         if (this.router) {
             features.router = this.router;
+            this.router.addRoutes([
+                {
+                    path: '*',
+                    component: () => import(/* webpackChunkName: "error" */ '@/modules/app/views/Error404.vue'),
+                },
+            ]);
         }
         if (this.store) {
             features.store = this.store;
@@ -69,7 +76,7 @@ export class SinglePageApp implements Application {
                 await setup(this);
             });
 
-            this.mount(AppComponent as VueConstructor, '#app');
+            authService().onAuthStateChanged(() => this.mount(AppComponent as VueConstructor, '#app'));
 
             this.executed = true;
         }

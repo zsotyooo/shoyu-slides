@@ -1,7 +1,7 @@
 <template>
-  <layout-empty>
+  <admin-layout-full>
     <HelloWorld />
-  </layout-empty>
+  </admin-layout-full>
 </template>
 
 <script lang="ts">

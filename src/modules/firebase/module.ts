@@ -1,7 +1,11 @@
 import { Application } from '@/modules/core';
-import { SetupFirebase } from './SetupFirebase';
+import firebaseServices from './services/FirebaseServices';
+import config from './config';
 
 export default () => ({
     name: 'firebase',
-    setup: (app: Application) => (new SetupFirebase()).setup(app),
+    setup: (app: Application) => {
+        firebaseServices.init(config);
+        return Promise.resolve();
+    },
 });
