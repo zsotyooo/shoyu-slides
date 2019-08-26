@@ -15,7 +15,7 @@ import vuetify from '@/modules/vuetify/module';
 import router from '@/modules/router/module';
 import store from '@/modules/store/module';
 import firebaseModule from '@/modules/firebase/module';
-import helloworld from '@/modules/helloworld/module';
+import pages from '@/modules/pages/module';
 import user from '@/modules/user/module';
 import bodymovin from '@/modules/bodymovin/module';
 
@@ -35,4 +35,4 @@ di.registerModule(firebaseModule());
 di.registerModule(admin());
 di.registerModule(auth());
 di.registerModule(user());
-di.registerModule(helloworld());
+di.registerModule(pages());

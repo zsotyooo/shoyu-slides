@@ -8,7 +8,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary"
+            <v-btn color="accent"
                 :disabled="!valid"
                 @click="submit">{{ submitText }}</v-btn>
         </v-card-actions>

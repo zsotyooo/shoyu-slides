@@ -66,6 +66,8 @@ const { Action, Getter } = namespace('auth');
 export default class Login extends Vue {
     @Prop({ default: false }) public logout?: boolean;
 
+    public isDark = true;
+
     @Action private signOutAction!: () => void;
 
     @Getter private isLoggedIn!: boolean;
