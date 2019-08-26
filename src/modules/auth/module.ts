@@ -11,6 +11,13 @@ export default () => ({
         router.addRoutes(routes);
 
         store.registerModule('auth', storeConfig);
+        store.dispatch('admin/appendMenuAction', [
+            {
+                to: '/logout',
+                icon: 'mdi-logout-variant',
+                text: 'Sign out',
+            },
+        ]);
 
         router.beforeEach((to, from, next) => {
             const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);

@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { AdminState } from '..';
+import { AdminState, MenuItem } from '..';
 
 export const mutations: MutationTree<AdminState> = {
     setIsResponsive(state, isResponsive: boolean) {
@@ -12,5 +12,13 @@ export const mutations: MutationTree<AdminState> = {
 
     toggleDrawer(state) {
         state.isDrawerOpen = !state.isDrawerOpen;
+    },
+
+    appendMenu(state, items: MenuItem[]) {
+        state.menu = [ ...state.menu, ...items ];
+    },
+
+    prependMenu(state, items: MenuItem[]) {
+        state.menu = [ ...items, ...state.menu ];
     },
 };

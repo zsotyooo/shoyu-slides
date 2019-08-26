@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import { RootState } from '@/modules/store';
-import { AdminState } from '..';
+import { AdminState, MenuItem } from '..';
 
 export const actions: ActionTree<AdminState, RootState> = {
     setIsResponsiveAction({ commit }, isResponsive: boolean) {
@@ -13,5 +13,13 @@ export const actions: ActionTree<AdminState, RootState> = {
 
     toggleDrawerAction({ commit }) {
         commit('toggleDrawer');
+    },
+
+    appendMenuAction({ commit }, items: MenuItem[]) {
+        commit('appendMenu', items);
+    },
+
+    prependMenuAction({ commit }, items: MenuItem[]) {
+        commit('prependMenu', items);
     },
 };

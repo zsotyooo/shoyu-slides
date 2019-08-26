@@ -10,6 +10,7 @@ const namespaced = true;
 const state: AdminState = {
     isResponsive: false,
     isDrawerOpen: true,
+    menu: [],
 };
 
 export const storeConfig: Module<AdminState, RootState> = {

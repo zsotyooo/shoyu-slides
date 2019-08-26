@@ -33,6 +33,24 @@
 
     <v-divider class="mx-3 mb-3" />
 
+    <v-list nav>
+      <!-- Bug in Vuetify for first child of v-list not receiving proper border-radius -->
+      <div />
+
+      <v-list-item
+        v-for="(link, i) in menu"
+        :key="i"
+        :to="link.to"
+        active-class="primary white--text"
+      >
+        <v-list-item-action>
+          <v-icon>{{ link.icon }}</v-icon>
+        </v-list-item-action>
+
+        <v-list-item-title v-text="link.text" />
+      </v-list-item>
+    </v-list>
+
     <template #append>
       <v-list nav>
         <v-list-item
@@ -55,7 +73,8 @@
 <script lang="ts">
 import { namespace } from 'vuex-class';
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
-import CurrentUser from '../../user/components/CurrentUser.vue';
+import CurrentUser from '@/modules/user/components/CurrentUser.vue';
+import { MenuItem } from '..';
 
 const { Action, Getter } = namespace('admin');
 
@@ -68,6 +87,7 @@ export default class AppDrawer extends Vue {
     @Action private setIsDrawerOpenAction: (isDrawerOpen: boolean) => void;
     // @Action private toggleDrawerAction: () => void;
     @Getter private isDrawerOpen!: boolean;
+    @Getter private menu!: MenuItem[];
 
     set drawerValue(val: boolean) {
         this.setIsDrawerOpenAction(val);
