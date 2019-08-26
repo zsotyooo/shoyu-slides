@@ -15,3 +15,14 @@
     <slot name="outside"></slot>
   </v-app>
 </template>
+
+<script lang="ts">
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+
+@Component({})
+export default class LayoutLogo extends Vue {
+    public created() {
+        this.$vuetify.theme.dark = true;
+    }
+}
+</script>

@@ -17,10 +17,14 @@ import store from '@/modules/store/module';
 import firebaseModule from '@/modules/firebase/module';
 import pages from '@/modules/pages/module';
 import user from '@/modules/user/module';
+import slideshow from '@/modules/slideshow/module';
 import bodymovin from '@/modules/bodymovin/module';
+import { SlideshowService } from './modules/slideshow';
+import { FirebaseSlideshowService } from './modules/slideshow/services/FirebaseSlideshowService';
 
 // Configure dependencies:
 di.addService<UserService>('userService', FirebaseUserService);
+di.addService<SlideshowService>('slideshowService', FirebaseSlideshowService);
 di.addService<AuthService<firebase.auth.AuthProvider>>('authService', FirebaseAuthService);
 di.addService<Application>('app', SinglePageApp);
 
@@ -36,3 +40,4 @@ di.registerModule(admin());
 di.registerModule(auth());
 di.registerModule(user());
 di.registerModule(pages());
+di.registerModule(slideshow());

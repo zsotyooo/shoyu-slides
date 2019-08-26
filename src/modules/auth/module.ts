@@ -16,6 +16,7 @@ export default () => ({
                 to: '/logout',
                 icon: 'mdi-logout-variant',
                 text: 'Sign out',
+                slot: 'bottom',
             },
         ]);
 

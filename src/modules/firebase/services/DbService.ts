@@ -1,9 +1,7 @@
 import * as firebase from 'firebase/app';
-import { Document } from '..';
+import { Document, Filter } from '..';
 
 export class DbService {
-
-
     constructor(
         private db: firebase.firestore.Firestore,
     ) { }
@@ -40,35 +38,32 @@ export class DbService {
         }
     }
 
-    // TODO: refactor these:
-    // async getCollection<D extends Document = Document>(collectionId: string, filter?: Filter): Promise<D[]> {
-    //     return new Promise((resolve, reject) => {
-    //         let prom: Promise<firebase.firestore.QuerySnapshot>;
-    //         if (filter) {
-    //             prom = this.db.collection(collectionId)
-    //                 .where(filter.fieldPath, filter.opStr, filter.value)
-    //                 .get();
-    //         } else {
-    //             prom = this.db.collection(collectionId)
-    //                 .get();
-    //         }
-    //         prom
-    //             .then(function (querySnapshot) {
-    //                 const documents: D[] = [];
-    //                 querySnapshot.forEach(function (doc) {
-    //                     documents.push({
-    //                         id: doc.id,
-    //                         data: doc.data()
-    //                     } as D);
-    //                 });
-    //                 resolve(documents);
-    //             })
-    //             .catch(error => {
-    //                 reject(error);
-    //             });
-    //     });
-    // }
+    public async getCollection<D extends Document = Document>(collectionId: string, filter?: Filter): Promise<D[]> {
+        try {
+            let querySnapshot: firebase.firestore.QuerySnapshot;
+            if (filter) {
+                querySnapshot = await this.db.collection(collectionId)
+                    .where(filter.fieldPath, filter.opStr, filter.value)
+                    .get();
+            } else {
+                querySnapshot = await this.db.collection(collectionId)
+                    .get();
+            }
+            const documents: D[] = [];
+            querySnapshot.forEach((doc) => {
+                documents.push({
+                    id: doc.id,
+                    data: doc.data(),
+                } as D);
+            });
+            return Promise.resolve(documents);
+        } catch (e) {
+            console.error('Error getting collection!', e);
+            return Promise.reject(e);
+        }
+    }
 
+    // TODO: refactor these:
     // removeDocument(collectionId: string, documentId: string) {
     //     return new Promise((resolve, reject) => {
     //         this.db.collection(collectionId)

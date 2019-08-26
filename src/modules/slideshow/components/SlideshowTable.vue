@@ -1,0 +1,113 @@
+<template>
+    <v-row justify="center">
+        <v-col cols="12">
+            <admin-card color="secondary" title="Slideshows" text="Your slideshows">
+                <v-row>
+                    <div class="flex-grow-1" />
+                    <v-col>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="search"
+                            label="Search"
+                            single-line
+                            hide-details
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-data-table
+                    v-model="selected"
+                    :headers="headers"
+                    :items="slideshows || []"
+                    :single-select="true"
+                    :search="search"
+                    item-key="title"
+                    loading="status === 'loading'"
+                    show-select
+                >
+                    <template #item.title="{ item, select }">
+                        <strong v-if="item.isPublished">
+                            {{ item.title }}
+                        </strong>
+                        <span v-else>
+                            {{ item.title }}
+                        </span>
+                    </template>
+
+                    <template #item.nrOfSlides="{ item, select }">
+                        <em>
+                            {{ item.slides.length }} slide{{item.slides.length > 1 ? 's' : ''}}
+                        </em>
+                    </template>
+
+                    <template #item.edit="{ item, select }">
+                        <transition type="fade">
+                            <v-btn small text ripple v-if="!item.isPublished" color="accent">
+                                <v-icon>mdi-checkbox-marked-circle-outline</v-icon>publish
+                            </v-btn>
+                            <v-chip color="primary" v-else>
+                                <v-icon left>mdi-check</v-icon>PUBLISHED
+                            </v-chip>
+                        </transition>
+                        <v-btn small text ripple color="accent">
+                            <v-icon>mdi-circle-edit-outline</v-icon>edit
+                        </v-btn>
+                    </template>
+                </v-data-table>
+
+                <template #actions>
+                    <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
+                    <v-btn color="grey" text ripple>Unpublish selection</v-btn>
+                </template>
+            </admin-card>
+        </v-col>
+    </v-row>
+</template>
+
+<script lang="ts">
+import { namespace } from 'vuex-class';
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import { AuthUser } from '@/modules/auth';
+import { Slideshow } from '..';
+
+const { Action, Getter } = namespace('slideshow');
+const authNs = namespace('auth');
+
+@Component({})
+export default class AppBar extends Vue {
+    @Action private fetchSlideshows: (authUser: AuthUser) => void;
+    @authNs.Getter private authUser!: AuthUser | null;
+    @Getter private slideshows!: Slideshow[];
+    @Getter private status!: 'loading' | 'success' | 'failed';
+
+    private selected: Slideshow[] = [];
+
+    private headers = [
+        {
+            text: 'Title',
+            align: 'left',
+            sortable: true,
+            value: 'title',
+        },
+        {
+            text: 'Nr. of slides',
+            align: 'left',
+            sortable: false,
+            value: 'nrOfSlides',
+        },
+        {
+            text: '',
+            align: 'right',
+            sortable: false,
+            value: 'edit',
+        },
+    ];
+
+    private search = '';
+
+    public created() {
+        if (this.authUser) {
+            this.fetchSlideshows({...this.authUser} as AuthUser);
+        }
+    }
+}
+</script>

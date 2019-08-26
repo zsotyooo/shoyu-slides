@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import dark from './themes/dark';
+import theme from './themes/shoyu';
 import WebFontLoader from 'webfontloader';
 import { Application } from '@/modules/core';
 
@@ -19,7 +19,7 @@ export default () => ({
 
         Vue.use(Vuetify);
 
-        app.addFeature('vuetify', new Vuetify(dark));
+        app.addFeature('vuetify', new Vuetify(theme));
 
         return Promise.resolve();
     },

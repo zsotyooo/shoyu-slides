@@ -85,7 +85,7 @@ export default class Login extends Vue {
     @Watch('isLoggedIn')
     private onLoggedInChanged(val: boolean, prev: boolean) {
         if (val === true) {
-            this.$router.push('about');
+            this.$router.push('/');
         } else if (val === false && this.logout) {
             this.showLogoutMessage = true;
         }

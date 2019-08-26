@@ -2,7 +2,15 @@
     <v-app>
         <admin-app-bar />
         <admin-app-drawer />
-        <slot></slot>
+        <v-content class="grey lighten-3">
+            <v-divider />
+            <div id="core-view" class="pl-4 pr-4">
+                <v-fade-transition mode="out-in">
+                    <slot></slot>
+                </v-fade-transition>
+            </div>
+        </v-content>
+        <slot name="outside"></slot>
     </v-app>
 </template>
 
@@ -18,14 +26,8 @@ import AdminAppDrawer from '../components/AppDrawer.vue';
     },
 })
 export default class LayoutFull extends Vue {
-    // @Prop({ default: false }) public heading: boolean = false;
-    // @Prop() public headingText!: string;
-    // @Prop() public submitText!: string;
-    // @Prop({ default: true }) public valid!: boolean;
-
-    // @Emit()
-    // public submit() {
-    //     return;
-    // }
+    public created() {
+        this.$vuetify.theme.dark = false;
+    }
 }
 </script>

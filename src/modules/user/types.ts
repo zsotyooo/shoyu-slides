@@ -1,4 +1,4 @@
-import { Document } from '@/modules/firebase/types';
+import { Document } from '@/modules/firebase';
 
 export interface User {
     uid: string;
