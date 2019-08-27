@@ -1,8 +1,8 @@
 import { MutationTree } from 'vuex';
-import { Slideshow, SlideshowState, SlideshowType } from '../types';
+import { Slideshow, SlideshowState, SlideshowType, SlideshowStatus } from '..';
 
 export const mutations: MutationTree<SlideshowState> = {
-    setStatus(state, payload: 'loading' | 'success' | 'failed') {
+    setStatus(state, payload: SlideshowStatus | null) {
         state.status = payload;
     },
 

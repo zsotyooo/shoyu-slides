@@ -1,5 +1,5 @@
 import { di } from '@/modules/core/di';
-import { SlideshowService } from './types';
+import { SlideshowService, SlideshowTypeDetials } from './types';
 
 export * from './types';
 
@@ -11,3 +11,11 @@ export const slideshowService = () => {
     }
     return slideshowServiceInstance;
 };
+
+export const slideshowTypes: SlideshowTypeDetials[] = [
+    {
+        type: 'md',
+        name: 'Markdown slideshow',
+        description: 'Simple markdown slideshow with a singular markdown editor',
+    },
+];

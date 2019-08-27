@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex';
 import { RootState } from '@/modules/store/types';
-import { Slideshow, SlideshowState } from '../types';
+import { Slideshow, SlideshowState, SlideshowStatus } from '..';
 
 export const getters: GetterTree<SlideshowState, RootState> = {
     slideshows(state): Slideshow[] | null {
@@ -11,7 +11,7 @@ export const getters: GetterTree<SlideshowState, RootState> = {
         const { currentSlideshow } = state;
         return currentSlideshow;
     },
-    status(state): 'loading' | 'success' | 'failed' {
+    status(state): SlideshowStatus | null {
         const { status } = state;
         return status;
     },

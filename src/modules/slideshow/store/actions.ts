@@ -17,7 +17,7 @@ export const actions: ActionTree<SlideshowState, RootState> = {
                     commit('removeSlideshows');
                 }
             } catch (e) {
-                commit('setStatus', 'failed');
+                commit('setStatus', 'failure');
                 commit('removeSlideshows');
             }
         } else {

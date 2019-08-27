@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center">
         <v-col cols="12">
-            <admin-card color="secondary" title="Slideshows" text="Your slideshows">
+            <admin-card color="secondary" title="Slideshows" text="Your slideshows" elevation="6">
                 <v-row>
                     <div class="flex-grow-1" />
                     <v-col>
@@ -21,7 +21,7 @@
                     :single-select="true"
                     :search="search"
                     item-key="title"
-                    loading="status === 'loading'"
+                    :loading="status === 'loading'"
                     show-select
                 >
                     <template #item.title="{ item, select }">
@@ -56,7 +56,7 @@
 
                 <template #actions>
                     <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
-                    <v-btn color="grey" text ripple>Unpublish selection</v-btn>
+                    <v-btn color="error" outlined ripple>Unpublish selection</v-btn>
                 </template>
             </admin-card>
         </v-col>
@@ -111,3 +111,12 @@ export default class AppBar extends Vue {
     }
 }
 </script>
+
+<style>
+    .theme--light.v-data-table tbody tr:not(.v-data-table__expand-row) {
+        background: #eeeeee !important;
+    }
+    .theme--light.v-data-table tbody tr:hover:not(.v-data-table__expand-row) {
+        background: #cccccc !important;
+    }
+</style>

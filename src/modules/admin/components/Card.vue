@@ -1,6 +1,6 @@
 <template>
-  <v-card :style="styles" v-bind="$attrs" v-on="$listeners">
-    <admin-helper-offset v-if="hasOffset" :inline="inline" :full-width="fullWidth" :offset="offset">
+  <v-card :style="styles" v-bind="$attrs" v-on="$listeners" class="elevation-2">
+    <!-- <admin-helper-offset v-if="hasOffset" :inline="inline" :full-width="fullWidth" :offset="offset">
       <v-card
         v-if="!$slots.offset"
         :color="color"
@@ -8,16 +8,19 @@
         class="v-card--material__header d-flex align-center"
         dark
         min-height="80"
-      >
+      > -->
         <slot v-if="!title && !text" name="header" />
-        <div v-else class="px-3">
-          <h4 class="title font-weight-light mb-2" v-text="title" />
-          <p class="category font-weight-thin mb-0" v-text="text" />
-        </div>
-      </v-card>
+        <v-list-item two-line class="py-4" v-else>
+          <v-list-item-content>
+            <v-list-item-title class="headline font-weight-light">{{ title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ text }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider />
+      <!-- </v-card>
 
       <slot v-else name="offset" />
-    </admin-helper-offset>
+    </admin-helper-offset> -->
 
     <v-card-text>
       <slot />
@@ -25,7 +28,7 @@
 
     <v-divider v-if="$slots.actions" class="mx-3" />
 
-    <v-card-actions v-if="$slots.actions">
+    <v-card-actions v-if="$slots.actions" class="py-6">
       <div class="flex-grow-1" />
       <slot name="actions" />
     </v-card-actions>

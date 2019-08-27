@@ -1,17 +1,17 @@
 <template>
   <admin-layout-full>
-    <slideshow-table />
+    <slideshow-form />
   </admin-layout-full>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import SlideshowTable from '../components/SlideshowTable.vue';
+import SlideshowForm from '../components/SlideshowForm.vue';
 
 @Component({
   components: {
-    SlideshowTable,
+    SlideshowForm,
   },
 })
-export default class Slideshows extends Vue {}
+export default class Create extends Vue {}
 </script>

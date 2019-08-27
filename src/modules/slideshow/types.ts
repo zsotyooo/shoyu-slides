@@ -1,6 +1,17 @@
 import { Document } from '@/modules/firebase';
+import { VueConstructor } from 'vue';
+import firebase from 'firebase/app';
 
 export type SlideshowType = 'md';
+
+export interface SlideshowTypeDetials {
+    type: SlideshowType;
+    name: string;
+    description: string;
+    // slideEditorComponent: VueConstructor;
+}
+
+export type SlideshowStatus = 'success' | 'failure' | 'loading';
 
 export interface Slide {
     name: string;
@@ -20,6 +31,8 @@ export interface Slideshow {
     type: SlideshowType;
     uid: string;
     slides: Slide[];
+    createdAt: firebase.firestore.Timestamp | null;
+    updatedAt: firebase.firestore.Timestamp | null;
 }
 
 export interface SlideshowDocument extends Document {
@@ -27,7 +40,7 @@ export interface SlideshowDocument extends Document {
 }
 
 export interface SlideshowState {
-    status: 'loading' | 'success' | 'failed';
+    status: SlideshowStatus | null;
     slideshows: Slideshow[] | null;
     currentSlideshow: Slideshow | null;
 }
