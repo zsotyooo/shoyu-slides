@@ -14,7 +14,7 @@ export default () => ({
         app.getRouter().addRoutes(routes);
         app.getStore().dispatch('admin/prependMenuAction', [
             {
-                to: '/slideshows',
+                to: '/admin/slideshows',
                 icon: 'mdi-dots-horizontal-circle-outline',
                 text: 'Slideshows',
                 slot: 'top',

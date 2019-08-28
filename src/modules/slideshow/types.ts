@@ -11,6 +11,15 @@ export interface SlideshowTypeDetials {
     // slideEditorComponent: VueConstructor;
 }
 
+export type SlideshowTheme = 'light' | 'dark';
+
+export interface SlideshowThemeDetials {
+    theme: SlideshowTheme;
+    name: string;
+    description: string;
+    // slideEditorComponent: VueConstructor;
+}
+
 export type SlideshowStatus = 'success' | 'failure' | 'loading';
 
 export interface Slide {
@@ -24,15 +33,16 @@ export interface MdSlide extends Slide {
 }
 
 export interface Slideshow {
+    id?: string;
     imageUrl: string;
     isPublished: boolean;
-    theme: string;
+    theme: SlideshowTheme;
     title: string;
     type: SlideshowType;
     uid: string;
     slides: Slide[];
-    createdAt: firebase.firestore.Timestamp | null;
-    updatedAt: firebase.firestore.Timestamp | null;
+    createdAt: firebase.firestore.FieldValue | null;
+    updatedAt: firebase.firestore.FieldValue | null;
 }
 
 export interface SlideshowDocument extends Document {
@@ -47,5 +57,7 @@ export interface SlideshowState {
 
 export interface SlideshowService {
     fetchSlideshows: (uid: string) => Promise<false | SlideshowDocument[]>;
+    addSlideshow: (slideshow: Slideshow) => Promise<SlideshowDocument>;
     saveSlideshow: (slideshow: SlideshowDocument) => Promise<SlideshowDocument>;
+    fetchSlideshow: (id: string) => Promise<SlideshowDocument | false>;
 }

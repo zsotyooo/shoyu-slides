@@ -74,7 +74,7 @@ const authNs = namespace('auth');
 
 @Component({})
 export default class AppBar extends Vue {
-    @Action private fetchSlideshows: (authUser: AuthUser) => void;
+    @Action private fetchSlideshowsAction: (authUser: AuthUser) => void;
     @authNs.Getter private authUser!: AuthUser | null;
     @Getter private slideshows!: Slideshow[];
     @Getter private status!: 'loading' | 'success' | 'failed';
@@ -104,9 +104,9 @@ export default class AppBar extends Vue {
 
     private search = '';
 
-    public created() {
+    public mounted() {
         if (this.authUser) {
-            this.fetchSlideshows({...this.authUser} as AuthUser);
+            this.fetchSlideshowsAction({...this.authUser} as AuthUser);
         }
     }
 }

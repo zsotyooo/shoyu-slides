@@ -1,17 +1,7 @@
 <template>
   <admin-layout-full>
-    <HelloWorld />
+    <div>
+      <v-btn to="/admin/slideshows">Go to admin panel</v-btn>
+    </div>
   </admin-layout-full>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '../components/HelloWorld.vue';
-
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class Home extends Vue {}
-</script>

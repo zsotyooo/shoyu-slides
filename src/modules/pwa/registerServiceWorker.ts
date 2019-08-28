@@ -3,7 +3,8 @@
 import { register } from 'register-service-worker';
 
 export default () => {
-  if (process.env.NODE_ENV === 'production') {
+  // TODO: investigate issue with workbox options
+  if (false && process.env.NODE_ENV === 'production') {
     register(`${process.env.BASE_URL}service-worker.js`, {
       ready() {
         console.log(

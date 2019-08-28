@@ -38,6 +38,23 @@ export class DbService {
         }
     }
 
+    public async addDocument<
+        D extends Document = Document,
+        DD extends firebase.firestore.DocumentData = firebase.firestore.DocumentData
+    >(
+        collectionId: string,
+        payload: DD,
+    ): Promise<D> {
+        try {
+            const res = await this.db.collection(collectionId)
+                .add(payload);
+            return Promise.resolve({id: res.id, data: {}} as D);
+        } catch (e) {
+            console.error('Error setting a document!', e);
+            return Promise.reject(e);
+        }
+    }
+
     public async getCollection<D extends Document = Document>(collectionId: string, filter?: Filter): Promise<D[]> {
         try {
             let querySnapshot: firebase.firestore.QuerySnapshot;
