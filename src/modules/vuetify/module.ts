@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import theme from './themes/shoyu';
 import WebFontLoader from 'webfontloader';
-import { Application } from '@/modules/core';
+import { Application } from '@/core';
 
 export default () => ({
     name: 'vuetify',

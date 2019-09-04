@@ -1,9 +1,10 @@
 import { ActionTree, Commit } from 'vuex';
-import { RootState } from '@/modules/store';
+import { RootState } from '@/core';
 import { authService, AuthState, EmailPasswordCredentials } from '..';
+import { appStateService } from '@/modules/app';
 
 const signInWithProvider = async (commit: Commit, provider: any) => {
-    commit('setStatus', 'loading');
+    appStateService().setLoading();
     try {
         const user = await authService().signInWithPopup(provider);
         if (user) {
@@ -11,12 +12,10 @@ const signInWithProvider = async (commit: Commit, provider: any) => {
         } else {
             commit('removeAuthUser');
         }
-        commit('setStatus', 'success');
-        commit('setError', null);
+        appStateService().setSuccess('You have successfully signed in.');
         return Promise.resolve(user);
     } catch (e) {
-        commit('setStatus', 'failure');
-        commit('setError', e.message);
+        appStateService().setError(e.message);
         return Promise.reject(e);
     }
 };
@@ -32,7 +31,7 @@ export const actions: ActionTree<AuthState, RootState> = {
     },
 
     async signUpAction({ commit }, payload: EmailPasswordCredentials) {
-        commit('setStatus', 'loading');
+        appStateService().setLoading();
         try {
             const user = await authService().createUserWithEmailAndPassword(payload);
             if (user) {
@@ -40,18 +39,16 @@ export const actions: ActionTree<AuthState, RootState> = {
             } else {
                 commit('removeAuthUser');
             }
-            commit('setStatus', 'success');
-            commit('setError', null);
+            appStateService().setSuccess('You have successfully signed up.');
             return Promise.resolve(user);
         } catch (e) {
-            commit('setStatus', 'failure');
-            commit('setError', e.message);
+            appStateService().setError(e.message);
             return Promise.reject(e);
         }
     },
 
     async signInAction({ commit }, payload: EmailPasswordCredentials) {
-        commit('setStatus', 'loading');
+        appStateService().setLoading();
         try {
             const user = await authService().signInWithEmailAndPassword(payload);
             if (user) {
@@ -59,12 +56,10 @@ export const actions: ActionTree<AuthState, RootState> = {
             } else {
                 commit('removeAuthUser');
             }
-            commit('setStatus', 'success');
-            commit('setError', null);
+            appStateService().setSuccess('You have successfully signed in.');
             return Promise.resolve(user);
         } catch (e) {
-            commit('setStatus', 'failure');
-            commit('setError', e.message);
+            appStateService().setError(e.message);
             return Promise.reject(e);
         }
     },
@@ -83,19 +78,16 @@ export const actions: ActionTree<AuthState, RootState> = {
         try {
             await authService().signOut();
             commit('removeAuthUser');
-            commit('setStatus', 'success');
-            commit('setError', null);
+            appStateService().setSuccess('You have successfully signed out.');
             return Promise.resolve();
         } catch (e) {
-            commit('setStatus', 'failure');
-            commit('setError', e.message);
+            appStateService().setError(e.message);
             return Promise.reject();
         }
     },
 
     async signOutLightAction({ commit }) {
         commit('removeAuthUser');
-        commit('setStatus', 'success');
-        commit('setError', null);
+        appStateService().setSuccess(null);
     },
 };

@@ -1,17 +1,19 @@
 <template>
-    <v-app>
-        <admin-app-bar />
-        <admin-app-drawer />
-        <v-content class="grey lighten-3">
-            <v-divider />
-            <div id="core-view" class="pl-4 pr-4">
+    <admin-layout-empty class="layout">
+        <admin-app-bar class="layout__appbar" />
+        <admin-app-drawer  class="layout__drawer" />
+        <v-content class="grey lighten-3 layout__content">
+            <div class="flex-grow-1 d-flex flex-column">
+                
                 <v-fade-transition mode="out-in">
-                    <slot></slot>
+                    <div class="layout__slot flex-grow-1  d-flex flex-column">    
+                        <slot></slot>
+                    </div>
                 </v-fade-transition>
             </div>
         </v-content>
         <slot name="outside"></slot>
-    </v-app>
+    </admin-layout-empty>
 </template>
 
 <script lang="ts">
@@ -31,3 +33,14 @@ export default class LayoutFull extends Vue {
     }
 }
 </script>
+
+<style lang="scss">
+    .layout {
+        &__content {
+            .v-content__wrap {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+</style>

@@ -1,11 +1,7 @@
 import { MutationTree } from 'vuex';
-import { Slideshow, SlideshowState, SlideshowType, SlideshowStatus } from '..';
+import { Slideshow, SlideshowState } from '..';
 
 export const mutations: MutationTree<SlideshowState> = {
-    setStatus(state, payload: SlideshowStatus | null) {
-        state.status = payload;
-    },
-
     setSlideshows(state, payload: Slideshow[] | null) {
         state.slideshows = payload;
     },

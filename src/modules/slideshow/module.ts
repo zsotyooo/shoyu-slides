@@ -1,17 +1,19 @@
-import { Application } from '@/modules/core';
+import { Application } from '@/core';
 import routes from './routes';
 import { storeConfig } from './store';
 
 export default () => ({
     name: 'slideshow',
-    dependencies: ['router', 'vuetify', 'admin'],
+    dependencies: ['vuetify', 'admin'],
     setup: (app: Application) => {
         const store = app.getStore();
+        const router = app.getRouter();
         store.registerModule('slideshow', storeConfig);
         // authService().onAuthStateChanged((user) => {
         //     store.dispatch('user/setCurrentUser', user);
         // });
-        app.getRouter().addRoutes(routes);
+        router.addRoutes(routes);
+
         app.getStore().dispatch('admin/prependMenuAction', [
             {
                 to: '/admin/slideshows',
@@ -20,6 +22,21 @@ export default () => ({
                 slot: 'top',
             },
         ]);
+
+        router.beforeEach((to, from, next) => {
+            if (to.params.slideshowId) {
+                store.dispatch('slideshow/fetchCurrentSlideshowAction', to.params.slideshowId);
+                // .then(() => {
+                //     next();
+                // })
+                // .catch(() => {
+                //     next();
+                // });
+            } else {
+                store.dispatch('slideshow/removeCurrentSlideshowAction');
+            }
+            next();
+        });
         return Promise.resolve();
     },
 });

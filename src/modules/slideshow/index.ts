@@ -1,17 +1,10 @@
 import firebase from 'firebase/app';
-import { di } from '@/modules/core/di';
+import { services } from '@/core';
 import { SlideshowService, SlideshowTypeDetials, SlideshowThemeDetials, Slideshow } from './types';
 
 export * from './types';
 
-let slideshowServiceInstance: SlideshowService;
-
-export const slideshowService = () => {
-    if (!slideshowServiceInstance) {
-        slideshowServiceInstance = di.getService<SlideshowService>('slideshowService');
-    }
-    return slideshowServiceInstance;
-};
+export const slideshowService = () => services.getService<SlideshowService>('slideshowService');
 
 export const slideshowTypes: SlideshowTypeDetials[] = [
     {

@@ -19,28 +19,6 @@
                     </v-tab-item>
                 </v-tabs>
             </v-container>
-            <template #outside>
-                <v-snackbar
-                    v-model="showError"
-                    bottom
-                    color="error"
-                    multi-line>
-                    {{ error }}
-                    <v-btn icon text @click="showError = false">
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                </v-snackbar>
-                <v-snackbar
-                    v-model="showLogoutMessage"
-                    bottom
-                    color="success"
-                    multi-line>
-                    You have successfully signed out.
-                    <v-btn icon text @click="showLogoutMessage = false">
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                </v-snackbar>
-            </template>
         </admin-layout-logo>
     </div>
 </template>
@@ -66,15 +44,9 @@ const { Action, Getter } = namespace('auth');
 export default class Login extends Vue {
     @Prop({ default: false }) public logout?: boolean;
 
-    public isDark = true;
-
     @Action private signOutAction!: () => void;
 
     @Getter private isLoggedIn!: boolean;
-    @Getter private error!: string;
-
-    private showError = false;
-    private showLogoutMessage = false;
 
     public mounted() {
         if (this.logout) {
@@ -82,20 +54,8 @@ export default class Login extends Vue {
         }
     }
 
-    @Watch('isLoggedIn')
-    private onLoggedInChanged(val: boolean, prev: boolean) {
-        if (val === true) {
-            this.$router.push('/');
-        } else if (val === false && this.logout) {
-            this.showLogoutMessage = true;
-        }
-    }
-
-    @Watch('error')
-    private onErrorChanged(val: string, prev: string) {
-        if (val) {
-            this.showError = true;
-        }
+    public created() {
+        this.$vuetify.theme.dark = true;
     }
 }
 </script>

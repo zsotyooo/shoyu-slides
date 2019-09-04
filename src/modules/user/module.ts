@@ -1,9 +1,9 @@
 import { storeConfig } from './store';
-import { Application } from '@/modules/core';
+import { Application } from '@/core';
 import { authService } from '@/modules/auth';
 
 export default () => ({
-    dependencies: ['router', 'store', 'auth'],
+    dependencies: ['auth'],
     name: 'user',
     setup: (app: Application) => {
         const store = app.getStore();

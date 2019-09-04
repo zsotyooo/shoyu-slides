@@ -1,10 +1,10 @@
 import { injectable } from 'inversify';
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { Application } from '@/modules/core';
-import { RootState } from '@/modules/store';
+import { Application, RootState, services } from '..';
 import { authService } from '@/modules/auth';
+import AppComponent from '@/core/App.vue';
 
 @injectable()
 export class SinglePageApp implements Application {
@@ -49,7 +49,7 @@ export class SinglePageApp implements Application {
         return this.router;
     }
 
-    public mount(component: VueConstructor, place: string | Element | undefined) {
+    public mount(component: {}, place: string | Element | undefined) {
         const features = this.features;
         if (this.router) {
             features.router = this.router;
@@ -69,15 +69,16 @@ export class SinglePageApp implements Application {
         }).$mount(place);
     }
 
-    public async run(appComponent: VueConstructor, setups: Array<(app: Application) => void>) {
+    public async run() {
         if (!this.executed) {
-            setups.map(async (setup) => {
+            services.getModuleSetups().map(async (setup) => {
                 await setup(this);
             });
 
-            authService().onAuthStateChanged(() => this.mount(appComponent, '#app'));
+            authService().onAuthStateChanged(() => this.mount(AppComponent, '#app'));
 
             this.executed = true;
         }
+        console.info('The app is running');
     }
 }

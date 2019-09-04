@@ -1,9 +1,9 @@
-import { Application } from '@/modules/core';
+import { Application } from '@/core';
 import routes from './routes';
 
 export default () => ({
     name: 'pages',
-    dependencies: ['router', 'vuetify', 'admin'],
+    dependencies: ['admin'],
     setup: (app: Application) => {
         app.getRouter().addRoutes(routes);
         app.getStore().dispatch('admin/appendMenuAction', [

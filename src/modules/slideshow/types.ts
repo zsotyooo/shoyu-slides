@@ -20,8 +20,6 @@ export interface SlideshowThemeDetials {
     // slideEditorComponent: VueConstructor;
 }
 
-export type SlideshowStatus = 'success' | 'failure' | 'loading';
-
 export interface Slide {
     name: string;
     order: number;
@@ -50,7 +48,6 @@ export interface SlideshowDocument extends Document {
 }
 
 export interface SlideshowState {
-    status: SlideshowStatus | null;
     slideshows: Slideshow[] | null;
     currentSlideshow: Slideshow | null;
 }

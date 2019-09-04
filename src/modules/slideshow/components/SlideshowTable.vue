@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center">
-        <v-col cols="12">
-            <admin-card color="secondary" title="Slideshows" text="Your slideshows" elevation="6">
+        <v-col cols="12" class="px-8">
+            <!-- <admin-card color="secondary" title="Slideshows" text="Your slideshows" elevation="6"> -->
                 <v-row>
                     <div class="flex-grow-1" />
                     <v-col>
@@ -15,20 +15,24 @@
                     </v-col>
                 </v-row>
                 <v-data-table
+                    class="transparent"
                     v-model="selected"
                     :headers="headers"
                     :items="slideshows || []"
                     :single-select="true"
                     :search="search"
-                    item-key="title"
+                    item-key="id"
                     :loading="status === 'loading'"
                     show-select
                 >
                     <template #item.title="{ item, select }">
-                        <strong v-if="item.isPublished">
+                        <!-- <strong v-if="item.isPublished">
                             {{ item.title }}
                         </strong>
                         <span v-else>
+                            {{ item.title }}
+                        </span> -->
+                        <span>
                             {{ item.title }}
                         </span>
                     </template>
@@ -40,25 +44,22 @@
                     </template>
 
                     <template #item.edit="{ item, select }">
-                        <transition type="fade">
-                            <v-btn small text ripple v-if="!item.isPublished" color="accent">
+                        <!-- <transition type="fade">
+                            <v-btn ripple :disabled="item.isPublished" depressed rounded color="accent">
                                 <v-icon>mdi-checkbox-marked-circle-outline</v-icon>publish
                             </v-btn>
-                            <v-chip color="primary" v-else>
-                                <v-icon left>mdi-check</v-icon>PUBLISHED
-                            </v-chip>
-                        </transition>
-                        <v-btn small text ripple color="accent">
+                        </transition> -->
+                        <v-btn ripple depressed rounded color="primary" class="ml-2" :to="`/admin/slideshows/${item.id}/edit`">
                             <v-icon>mdi-circle-edit-outline</v-icon>edit
                         </v-btn>
                     </template>
                 </v-data-table>
 
-                <template #actions>
+                <!-- <template #actions>
                     <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
                     <v-btn color="error" outlined ripple>Unpublish selection</v-btn>
-                </template>
-            </admin-card>
+                </template> -->
+            <!-- </admin-card> -->
         </v-col>
     </v-row>
 </template>
@@ -68,16 +69,18 @@ import { namespace } from 'vuex-class';
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import { AuthUser } from '@/modules/auth';
 import { Slideshow } from '..';
+import { AdminStatus } from '../../admin';
 
 const { Action, Getter } = namespace('slideshow');
 const authNs = namespace('auth');
+const adminNs = namespace('admin');
 
 @Component({})
 export default class AppBar extends Vue {
     @Action private fetchSlideshowsAction: (authUser: AuthUser) => void;
     @authNs.Getter private authUser!: AuthUser | null;
     @Getter private slideshows!: Slideshow[];
-    @Getter private status!: 'loading' | 'success' | 'failed';
+    @adminNs.Getter private status!: AdminStatus;
 
     private selected: Slideshow[] = [];
 

@@ -2,8 +2,6 @@ import { UserInfo} from 'firebase';
 
 export type AuthUser = UserInfo;
 
-export type AuthStatus = 'success' | 'failure' | 'loading';
-
 export interface EmailPasswordCredentials {
     email: string;
     password: string;
@@ -11,8 +9,6 @@ export interface EmailPasswordCredentials {
 
 export interface AuthState {
     user: UserInfo | null;
-    status: AuthStatus | null;
-    error: string | null;
 }
 
 export interface AuthService<ProviderT> {
@@ -24,4 +20,5 @@ export interface AuthService<ProviderT> {
     onAuthStateChanged: (onAuthStateChangedCallback: (user?: AuthUser | null) => void) => void;
     getGoogleAuthProvider: () => ProviderT;
     getFacebookAuthProvider: () => ProviderT;
+    validateUser: (uid: string, throwException: boolean) => boolean;
 }

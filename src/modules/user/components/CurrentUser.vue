@@ -2,6 +2,7 @@
     <v-list-item v-if="isLoggedIn">
         <v-list-item-avatar v-if="photoUrl" color="grey darken-3">
             <v-img
+                :error="error = true"
                 class="elevation-6"
                 :src="photoUrl"
             ></v-img>
@@ -27,8 +28,20 @@ export default class CurrentUser extends Vue {
     @userNs.Getter private currentUser!: User;
     @authNs.Getter private isLoggedIn!: boolean;
 
+    private error = false;
+
     get photoUrl() {
-        return this.currentUser ? this.currentUser.photoUrl : false;
+        const getDefaultImg = () => {
+            if (!this.currentUser) {
+                return 'https://api.adorable.io/avatars/100/shoyu-slides.png';
+            }
+            return `https://api.adorable.io/avatars/100/${this.currentUser.uid}.png`;
+        };
+
+        if (this.error || !this.currentUser) {
+            return getDefaultImg();
+        }
+        return this.currentUser.photoUrl || getDefaultImg();
     }
 
     get displayName() {

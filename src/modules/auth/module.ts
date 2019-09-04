@@ -1,9 +1,9 @@
 import { storeConfig } from './store';
-import { Application } from '@/modules/core';
+import { Application } from '@/core';
 import routes from './routes';
 
 export default () => ({
-    dependencies: ['router', 'store', 'vuetify'],
+    dependencies: ['vuetify'],
     name: 'auth',
     setup: async (app: Application) => {
         const router = app.getRouter();

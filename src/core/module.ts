@@ -1,10 +1,16 @@
 import Vue from 'vue';
+import Vuex, { Store } from 'vuex';
 import Router from 'vue-router';
-import { Application } from '@/modules/core';
+import { storeConfig } from './store';
+import { RootState, Application, services } from '.';
 
 export default () => ({
-    name: 'router',
+    name: 'core',
     setup: (app: Application) => {
+        Vue.use(Vuex);
+
+        app.setStore(new Store<RootState>(storeConfig));
+
         Vue.use(Router);
 
         app.setRouter(new Router({

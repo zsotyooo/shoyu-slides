@@ -1,13 +1,6 @@
-import { di } from '@/modules/core/di';
+import { services } from '@/core';
 import { UserService } from './types';
 
-let userServiceInstance: UserService;
-
-export const userService = () => {
-    if (!userServiceInstance) {
-        userServiceInstance = di.getService<UserService>('userService');
-    }
-    return userServiceInstance;
-};
-
 export * from './types';
+
+export const userService = () => services.getService<UserService>('userService');

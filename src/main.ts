@@ -1,10 +1,7 @@
 import 'reflect-metadata';
 import { VueConstructor } from 'vue';
-import './config';
-import { di } from '@/modules/core/di';
-import { Application } from '@/modules/core';
-import AppComponent from '@/modules/app/App.vue';
+import { SinglePageApp } from '@/core/apps/SinglePageApp';
+import { bootstrap } from '@/core';
+import { modules } from './config';
 
-
-const theApp = di.getService<Application>('app');
-theApp.run(AppComponent as VueConstructor, di.getModuleSetups());
+bootstrap(SinglePageApp, modules).run();

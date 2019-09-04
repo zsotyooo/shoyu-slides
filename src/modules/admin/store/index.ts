@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-import { RootState } from '@/modules/store';
+import { RootState } from '@/core';
 import { AdminState } from '../';
 import { getters } from './getters';
 import { mutations } from './mutations';
@@ -10,7 +10,11 @@ const namespaced = true;
 const state: AdminState = {
     isResponsive: false,
     isDrawerOpen: true,
+    isDrawerMini: false,
     menu: [],
+    status: null,
+    error: null,
+    success: null,
 };
 
 export const storeConfig: Module<AdminState, RootState> = {

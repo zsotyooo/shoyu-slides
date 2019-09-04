@@ -31,7 +31,7 @@ export class DbService {
         try {
             await this.db.collection(collectionId).doc(payload.id)
                 .set(payload.data);
-            return Promise.resolve(payload);
+            return Promise.resolve({ ...payload, id: payload.id });
         } catch (e) {
             console.error('Error setting a document!', e);
             return Promise.reject(e);
@@ -46,9 +46,14 @@ export class DbService {
         payload: DD,
     ): Promise<D> {
         try {
-            const res = await this.db.collection(collectionId)
+            const ref = await this.db.collection(collectionId)
                 .add(payload);
-            return Promise.resolve({id: res.id, data: {}} as D);
+            const res = await ref.get();
+            const data = res.data();
+            if (!data) {
+                throw new Error('Empty result!');
+            }
+            return Promise.resolve({id: ref.id, data} as D);
         } catch (e) {
             console.error('Error setting a document!', e);
             return Promise.reject(e);
@@ -119,18 +124,6 @@ export class DbService {
     //             });
     //     });
     // }
-
-    // addDocument(
-    // collectionId: string,
-    // payload: firebase.firestore.DocumentData): Promise<firebase.firestore.DocumentReference> {
-    //     return new Promise((resolve, reject) => {
-    //         this.db.collection(collectionId)
-    //             .add(payload)
-    //             .then(response => resolve(response))
-    //             .catch(err => reject(err));
-    //     });
-    // }
-
     // public updateDocument(collectionId: string, payload: Document): Promise<void> {
     //     return new Promise((resolve, reject) => {
     //         const docRef = this.db.collection(collectionId).doc(payload.id);

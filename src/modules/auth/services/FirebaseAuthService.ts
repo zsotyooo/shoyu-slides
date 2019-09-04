@@ -1,8 +1,7 @@
 import { injectable } from 'inversify';
 import firebase, { User } from 'firebase/app';
 import { auth } from '@/modules/firebase';
-import { AuthUser, AuthService } from '../';
-import { EmailPasswordCredentials } from '../types';
+import { AuthUser, AuthService, EmailPasswordCredentials } from '../';
 
 const convertUserToAuthUser = (user: User | null | undefined): AuthUser | null => {
     if (user) {
@@ -67,5 +66,9 @@ export class FirebaseAuthService implements AuthService<firebase.auth.AuthProvid
 
     public getFacebookAuthProvider() {
         return new firebase.auth.FacebookAuthProvider();
+    }
+
+    public validateUser(uid: string, throwException = true): boolean {
+        return auth().validateUser(uid, throwException);
     }
 }

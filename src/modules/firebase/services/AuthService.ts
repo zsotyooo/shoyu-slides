@@ -60,4 +60,14 @@ export class AuthService {
     public onAuthStateChanged(onAuthStateChangedCallback: (user?: User | null) => void) {
         this.auth.onAuthStateChanged(onAuthStateChangedCallback);
     }
+
+    public validateUser(uid: string, throwException = true): boolean {
+        if (this.auth.currentUser && this.auth.currentUser.uid === uid) {
+            return true;
+        }
+        if (throwException) {
+            throw new Error('User does not match!');
+        }
+        return false;
+    }
 }

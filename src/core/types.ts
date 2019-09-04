@@ -1,13 +1,12 @@
 import { VueConstructor } from 'vue';
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { RootState } from '../store';
 
 export type SetupFn = (app: Application) => void;
 
 export interface Application {
     mount: (component: VueConstructor, place: string | Element | undefined) => void;
-    run: (appComponent: VueConstructor, setups: Array<(app: Application) => void>) => void;
+    run: () => void;
     setStore: (store: Store<RootState>) => void;
     getStore: () => Store<RootState>;
     setRouter: (router: VueRouter) => void;
@@ -20,4 +19,16 @@ export interface Module {
     name: string;
     dependencies?: string[];
     setup?: SetupFn;
+}
+
+export interface BootstrapConfig {
+    module: Module;
+    services?: Array<{
+        id: string;
+        service: new (...args: any[]) => any;
+    }>;
+}
+
+export interface RootState {
+    version: string;
 }
