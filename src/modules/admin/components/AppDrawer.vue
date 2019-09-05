@@ -3,7 +3,7 @@
         id="app-drawer"
         v-model="drawerValue"
         app
-        color="secondary darken-3"
+        color="primary"
         dark
         floating
         mobile-break-point="991"        
@@ -27,14 +27,12 @@
         <v-divider class="mx-3 mb-3 mt-3" />
         
         <v-list rounded>
-            <v-list-item-group>
-                <v-list-item active-class="secondary darken-2 white--text" @click="toggleDrawerMiniAction">
-                    <v-list-item-action>
-                        <v-icon>{{ isDrawerMini ? 'mdi-forwardburger' : 'mdi-backburger' }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-title>collapse menu</v-list-item-title>
-                </v-list-item>
-            </v-list-item-group>
+            <v-list-item active-class="primary lighten-1 white--text" @click="toggleDrawerMiniAction">
+                <v-list-item-action>
+                    <v-icon>{{ isDrawerMini ? 'mdi-forwardburger' : 'mdi-backburger' }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>collapse menu</v-list-item-title>
+            </v-list-item>
         </v-list>
         <v-divider class="mx-3 mb-3 mt-3" />
         <current-user />
@@ -46,7 +44,7 @@
                     v-for="(link, i) in topMenu"
                     :key="i"
                     :to="link.to"
-                    active-class="primary darken-2 white--text"
+                    active-class="primary lighten-1 white--text"
                 >
                     <v-list-item-action>
                         <v-icon>{{ link.icon }}</v-icon>

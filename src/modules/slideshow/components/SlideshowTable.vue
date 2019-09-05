@@ -53,12 +53,16 @@
                             <v-icon>mdi-circle-edit-outline</v-icon>edit
                         </v-btn>
                     </template>
-                </v-data-table>
 
-                <!-- <template #actions>
-                    <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
-                    <v-btn color="error" outlined ripple>Unpublish selection</v-btn>
-                </template> -->
+                    <template #footer>
+                        <v-divider class="mb-3" />
+                        <div class="text-right">
+                            <!-- <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
+                            <v-btn color="error" outlined ripple>Unpublish selection</v-btn> -->
+                            <v-btn to="/admin/slideshows/new" rounded color="primary" ripple class="mb-3 mr-4"><v-icon>mdi-plus</v-icon>New slideshow</v-btn>
+                        </div>
+                    </template>
+                </v-data-table>
             <!-- </admin-card> -->
         </v-col>
     </v-row>

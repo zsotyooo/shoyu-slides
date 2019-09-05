@@ -37,51 +37,7 @@
                 <v-divider />
             </div>
             <v-row class="edit-panel__slides flex-grow-1 d-flex flew-row edit-slides pl-2">
-                <v-col class="edit-slides__sidebar px-0" cols="3">
-                    <div class="edit-slides__sidebar-scroll px-0 white">
-                        <v-list rounded avatar>
-                            <v-list-item-group color="secondary">
-                                <Draggable 
-                                    :list="slides"
-                                    ghost-class="is-ghost"
-                                    chosen-class="is-chosen"
-                                    drag-class="is-drag"
-                                    class="mini-slides"
-                                >
-                                    <transition-group>
-                                        <v-list-item
-                                            v-for="(slide, i) in slides" :key="`minislide_${i}`"
-                                            class="mini-slides__item"
-                                            @click.stop="switchToSlide(i)"
-                                        >
-                                            <v-list-item-avatar color="accent white--text">
-                                                <strong>#{{ i }}</strong>
-                                            </v-list-item-avatar>
-                                            <v-list-item-content>
-                                                <v-list-item-title v-html="slide.name"></v-list-item-title>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </transition-group>
-                                </Draggable>
-                                <v-divider />
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    small
-                                    absolute
-                                    bottom
-                                    left
-                                    fab
-                                    @click.stop="addNewSlide"
-                                >
-                                    <v-icon>mdi-plus</v-icon>
-                                </v-btn>
-                            </v-list-item-group>
-                        </v-list>
-                    </div>
-                </v-col>
-                
-                <v-col class="edit-slides__edit flex-grow-1 d-flex flew-column pl-0" cols="9">
+                <div class="edit-slides__edit flex-grow-1 d-flex flew-column pl-0">
                     <v-divider vertical />
                     <div v-if="currentSlideIndex > -1" class="edit-slides__form d-flex flex-column flex-grow-1">
                         <EditableTitleCard
@@ -97,14 +53,13 @@
                                     <v-btn
                                         color="error"
                                         dark
-                                        small
                                         absolute
-                                        top
+                                        bottom
                                         right
-                                        fab
+                                        text
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-delete</v-icon>
+                                        <v-icon>mdi-delete</v-icon><span class="hover-show">delete slide</span>
                                     </v-btn>
                                 </template>
                                 <v-card>
@@ -129,7 +84,56 @@
                             v-model="slides[currentSlideIndex].content"
                         />
                     </div>
-                </v-col>
+                </div>
+                <v-navigation-drawer right :mini-variant="isSlidesMini" color="grey lighten-1">
+                    <div class="edit-slides__sidebar-scroll px-0">
+                        <v-list rounded avatar>
+                            <v-list-item-group>
+                                <Draggable 
+                                    :list="slides"
+                                    ghost-class="is-ghost"
+                                    chosen-class="is-chosen"
+                                    drag-class="is-drag"
+                                    class="mini-slides"
+                                >
+                                    <transition-group>
+                                        <v-list-item
+                                            active-class="secondary lighten-1"
+                                            v-for="(slide, i) in slides" :key="`minislide_${i}`"
+                                            class="mini-slides__item white--text"
+                                            @click.stop="switchToSlide(i)"
+                                        >
+                                            <v-list-item-avatar color="secondary white--text">
+                                                <strong>#{{ i + 1 }}</strong>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title v-html="slide.name" class="white--text"></v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </transition-group>
+                                </Draggable>
+                            </v-list-item-group>
+                        </v-list>
+                    </div>
+                    <template #append>
+                        <v-list rounded>
+                            <v-divider class="mb-3"/>
+                            <v-list-item @click.stop="addNewSlide">
+                                <v-list-item-action>
+                                    <v-icon class="white--text">mdi-plus</v-icon>
+                                </v-list-item-action>
+                                <v-list-item-title class="white--text">add slide</v-list-item-title>
+                            </v-list-item>
+                        
+                            <v-list-item @click="isSlidesMini = !isSlidesMini">
+                                <v-list-item-action>
+                                    <v-icon class="white--text">{{ isSlidesMini ? 'mdi-backburger' : 'mdi-forwardburger' }}</v-icon>
+                                </v-list-item-action>
+                                <v-list-item-title class="white--text">collapse slides</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </template>
+                </v-navigation-drawer>
             </v-row>
             <div class="edit-panel__toolbar">
                 <v-divider />
@@ -139,10 +143,10 @@
                     flat
                     bottom>
                     <v-row justify="center">
-                        <v-col cols="12" class="text-center">
+                        <div class="text-center">
                             <v-btn color="primary" ripple @click.stop="save"><v-icon>mdi-content-save-outline</v-icon>Save</v-btn>
                             <!-- <v-btn color="accent" ripple @click.stop="log" class="ml-2"><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish</v-btn> -->
-                        </v-col>
+                        </div>
                     </v-row>
                 </v-toolbar>
             </div>
@@ -200,17 +204,7 @@ export default class SlideshowForm extends Vue {
     @authNs.Getter private readonly authUser!: AuthUser;
     @Getter private readonly currentSlideshow!: Slideshow | null;
 
-    private unSavedSlideshow: Slideshow = {
-        title: '',
-        type: slideshowTypes[0].type,
-        theme: slideshowThemes[0].theme,
-        imageUrl: '',
-        uid: '',
-        isPublished: false,
-        slides: [],
-        createdAt: null,
-        updatedAt: null,
-    };
+    private isSlidesMini = false;
 
     private deleteDialog = false;
 
@@ -353,7 +347,7 @@ export default class SlideshowForm extends Vue {
 
      private addNewSlide() {
          this.slides.push({
-             name: `Slide #${this.slides.length}`,
+             name: `Slide #${this.slides.length + 1}`,
              content: '',
              order: this.slides.length,
          });
@@ -362,10 +356,23 @@ export default class SlideshowForm extends Vue {
 
      private switchToSlide(index: number) {
          this.currentSlideIndex = index;
+         setTimeout(() => {
+             if (document.querySelectorAll('.mini-slides__item').item(index)) {
+                document.querySelectorAll('.mini-slides__item').item(index).scrollIntoView();
+            }
+         }, 100);
+
      }
 
      private deleteCurrentSlide() {
-         this.slides.splice(this.currentSlideIndex, 1);
+         const pos = this.currentSlideIndex;
+        //  if (this.slides.length === 1) {
+         this.currentSlideIndex = -1;
+        //  }
+        //  if (this.slides.length === this.currentSlideIndex) {
+        //      this.currentSlideIndex = -1;
+        //  }
+         this.slides.splice(pos, 1);
      }
 }
 </script>
@@ -385,7 +392,7 @@ export default class SlideshowForm extends Vue {
             position: absolute;
             top: 0;
             right: 0;
-            bottom: 0;
+            bottom: 125px;
             left: 0;
             overflow: scroll;
         }
@@ -396,6 +403,15 @@ export default class SlideshowForm extends Vue {
             &.is-ghost {
                 opacity: 0.2;
             }
+        }
+    }
+
+    .hover-show {
+        overflow: hidden;
+        width: 0;
+        transition: all 0.1s ease-in;
+        .v-btn:hover & {
+            width: 100%;   
         }
     }
 </style>
