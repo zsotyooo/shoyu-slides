@@ -11,12 +11,26 @@ export interface SlideshowTypeDetials {
     // slideEditorComponent: VueConstructor;
 }
 
-export type SlideshowTheme = 'light' | 'dark';
+export type SlideshowTheme = 'beige'
+    | 'black'
+    | 'blood'
+    | 'league'
+    | 'moon'
+    | 'night'
+    | 'serif'
+    | 'simple'
+    | 'sky'
+    | 'solarized'
+    | 'white';
 
 export interface SlideshowThemeDetials {
     theme: SlideshowTheme;
     name: string;
-    description: string;
+    description?: string;
+    highlightTheme?: string;
+    bgColor?: string;
+    titleColor?: string;
+    color?: string;
     // slideEditorComponent: VueConstructor;
 }
 

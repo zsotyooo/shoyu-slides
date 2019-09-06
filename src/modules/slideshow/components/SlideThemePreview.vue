@@ -3,15 +3,15 @@
         <v-card
             class="mx-auto"
             :img="imageUrl || ''"
-            :dark="theme.theme == 'dark'"
+            :color="theme.bgColor || '#fff'"
             height="100%"
         >
-            <v-card-title>
+            <v-card-title :style="{color: theme.titleColor || '#000'}">
                 <slot name="title">
                     I'm a title
                 </slot>
             </v-card-title>
-            <v-card-text>
+            <v-card-text :style="{color: theme.color || '#000'}">
                 <slot name="content">
                     I'm a text
                 </slot>

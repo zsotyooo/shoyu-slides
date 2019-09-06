@@ -3,7 +3,7 @@
         id="app-drawer"
         v-model="drawerValue"
         app
-        color="primary"
+        color="primary darken-1"
         dark
         floating
         mobile-break-point="991"        
@@ -13,21 +13,23 @@
         :mini-variant="isDrawerMini"
         >
         <v-list-item two-line>
-            <v-list-item-avatar height="58" min-width="58" color="white" class="elevation-3">
+            <v-list-item-avatar tile height="58" min-width="58">
             <v-img
-                src="../../../assets/logo--color.svg"
+                src="../../../assets/logo--white.svg"
                 contain
             />
             </v-list-item-avatar>
 
             <v-list-item-title class="title white--text">
-                <h1 class="white--text display-1 font-weight-light">ShoYu</h1>
+                <h1 class="white--text display-1 font-weight-normal">ShoYu</h1>
+                <v-list-item-subtitle class="title font-weight-light">slideshows</v-list-item-subtitle>
             </v-list-item-title>
+            
         </v-list-item>
         <v-divider class="mx-3 mb-3 mt-3" />
         
         <v-list rounded>
-            <v-list-item active-class="primary lighten-1 white--text" @click="toggleDrawerMiniAction">
+            <v-list-item @click="toggleDrawerMiniAction">
                 <v-list-item-action>
                     <v-icon>{{ isDrawerMini ? 'mdi-forwardburger' : 'mdi-backburger' }}</v-icon>
                 </v-list-item-action>
@@ -44,7 +46,7 @@
                     v-for="(link, i) in topMenu"
                     :key="i"
                     :to="link.to"
-                    active-class="primary lighten-1 white--text"
+                   
                 >
                     <v-list-item-action>
                         <v-icon>{{ link.icon }}</v-icon>
@@ -114,9 +116,9 @@ export default class AppDrawer extends Vue {
 </script>
 
 <style scoped>
- h1 {
+ /* h1 {
      text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.14), 0px 0px 18px rgba(0, 0, 0, 0.12);
- }
+ } */
  .theme--dark.v-sheet {
      background-color: transparent;
  }

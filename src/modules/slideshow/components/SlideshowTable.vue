@@ -23,7 +23,6 @@
                     :search="search"
                     item-key="id"
                     :loading="status === 'loading'"
-                    show-select
                 >
                     <template #item.title="{ item, select }">
                         <!-- <strong v-if="item.isPublished">
@@ -49,8 +48,11 @@
                                 <v-icon>mdi-checkbox-marked-circle-outline</v-icon>publish
                             </v-btn>
                         </transition> -->
-                        <v-btn ripple depressed rounded color="primary" class="ml-2" :to="`/admin/slideshows/${item.id}/edit`">
+                        <v-btn ripple depressed text color="primary" class="ml-2" :to="`/admin/slideshows/${item.id}/edit`">
                             <v-icon>mdi-circle-edit-outline</v-icon>edit
+                        </v-btn>
+                        <v-btn :to="`/s/${item.id}`" ripple depressed rounded icon color="accent" class="ml-2">
+                            <v-icon>mdi-eye</v-icon>
                         </v-btn>
                     </template>
 

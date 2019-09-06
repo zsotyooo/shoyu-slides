@@ -23,4 +23,12 @@ export default [
             requiresAuth: true,
         },
     },
+    {
+        path: '/s/:slideshowId',
+        name: 'slideshow',
+        component: () => import(/* webpackChunkName: "slideshow" */ '@/modules/slideshow/views/View.vue'),
+        meta: {
+            requiresAuth: false,
+        },
+    },
 ];

@@ -15,7 +15,7 @@ const fetchSlideshow = async (commit: Commit, id: string): Promise<SlideshowDocu
         return Promise.resolve(res);
     } catch (e) {
         appStateService().setError(e.message);
-        commit('removeCurrentSlideshows');
+        commit('removeCurrentSlideshow');
         return Promise.reject(e);
 
     }

@@ -6,7 +6,7 @@ const dark: VuetifyPreset = {
     dark: false,
     themes: {
       light: {
-        primary: '#3aa859',
+        primary: '#FFA267',
       },
     },
   },
