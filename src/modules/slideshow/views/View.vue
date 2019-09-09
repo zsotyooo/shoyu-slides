@@ -1,7 +1,14 @@
 <template>
   <div ref="wrapper" class="reveal">
       <div class="slides" v-if="currentSlideshow">
-        <section v-for="(p, i) in currentSlideshow.slides" :key="`slide-${i}`" data-markdown data-transition="convex-in slide-out" data-transition-speed="slow" data-fullscreen data-separator-notes="^Notes?:">
+        <section
+            v-for="(p, i) in currentSlideshow.slides"
+            :key="`slide-${i}`"
+            data-markdown
+            :data-transition="`${p.animationIn} ${p.animationOut}`"
+            data-transition-speed="slow"
+            data-fullscreen
+            data-separator-notes="^Notes?:">
           <textarea data-template v-html="prepareMarkdown(p.content)">
           </textarea>
         </section>
@@ -13,20 +20,22 @@
 import { Component, Prop, Vue, Watch, Ref } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import WebFontLoader from 'webfontloader';
-import Reveal from 'reveal.js/js/reveal';
-import hljs from 'highlight.js';
 import { Slideshow } from '..';
-import { SlideshowTheme } from '../types';
+import { SlideshowTheme, MdSlide } from '../types';
 
 const { Getter } = namespace('slideshow');
 
 declare var RevealNotes: any;
 
-(window as any).Reveal = Reveal;
+const loadReveal = async () => {
+    const { default: Reveal } = await import(/* webpackChunkName: "reveal" */ 'reveal.js/js/reveal');
+    const { default: hljs } = await import(/* webpackChunkName: "reveal" */ 'highlight.js');
+    return Promise.resolve({ Reveal, hljs });
+};
 
 @Component
 export default class RevealSlideshow extends Vue {
-    @Getter private readonly currentSlideshow!: Slideshow | null;
+    @Getter private readonly currentSlideshow!: Slideshow<MdSlide> | null;
     @Ref('wrapper') private readonly wrapper!: HTMLDivElement;
     private inited = false;
 
@@ -49,7 +58,8 @@ export default class RevealSlideshow extends Vue {
                     //         ],
                     //     },
                     // });
-
+                    const { Reveal, hljs } = await loadReveal();
+                    (window as any).Reveal = Reveal;
                     await this.loadTheme(this.currentSlideshow.theme);
                     if (this.currentSlideshow.imageUrl) {
                         this.wrapper.style.backgroundImage = `url(${this.currentSlideshow.imageUrl})`;
@@ -57,27 +67,27 @@ export default class RevealSlideshow extends Vue {
                     Reveal.initialize({
                         dependencies: [
                             {
-                                src: '/js/reveal.js/plugin/markdown/marked.js',
+                                src: '/js/reveal/reveal.js/plugin/markdown/marked.js',
                             },
                             {
-                                src: '/js/reveal.js/plugin/markdown/markdown.js',
+                                src: '/js/reveal/reveal.js/plugin/markdown/markdown.js',
                             },
                             {
-                                src: '/js/reveal.js/plugin/highlight/highlight.js',
+                                src: '/js/reveal/reveal.js/plugin/highlight/highlight.js',
                                 async: true,
                                 callback: () => { hljs.initHighlightingOnLoad(); },
                             },
                             {
-                                src: '/js/reveal.js-menu/menu.js',
+                                src: '/js/reveal/reveal.js-menu/menu.js',
                             },
                             {
-                                src: '/js/reveal.js-plugins/fullscreen/fullscreen.js',
+                                src: '/js/reveal/fullscreen/fullscreen.js',
                             },
                             {
-                                src: '/js/reveal.js-toolbar/toolbar.js',
+                                src: '/js/reveal/reveal.js-toolbar/toolbar.js',
                             },
                             {
-                                src: '/js/reveal.js/plugin/notes/notes.js',
+                                src: '/js/reveal/reveal.js/plugin/notes/notes.js',
                                 async: true,
                             },
                         ],
@@ -104,10 +114,10 @@ export default class RevealSlideshow extends Vue {
 
     private async loadTheme(theme: SlideshowTheme): Promise<void> {
         try {
-            await this.loadCss(`/js/reveal.js/css/reset.css`);
-            await this.loadCss(`/js/reveal.js/css/reveal.css`);
-            await this.loadCss(`/js/reveal.js/css/theme/${theme}.css`);
-            await this.loadCss(`/js/highlight.js/styles/github.css`);
+            await this.loadCss(`/js/reveal/reveal.js/css/reset.css`);
+            await this.loadCss(`/js/reveal/reveal.js/css/reveal.css`);
+            await this.loadCss(`/js/reveal/reveal.js/css/theme/${theme}.css`);
+            await this.loadCss(`/js/reveal/highlight.js/styles/github.css`);
             return Promise.resolve();
         } catch (e) {
             return Promise.reject(e);

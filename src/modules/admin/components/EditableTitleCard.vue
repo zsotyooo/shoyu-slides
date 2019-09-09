@@ -88,33 +88,4 @@ export default class EditableTitleCard extends Vue {
             }
         }
     }
-
-    .v-input.text-field--large input,
-    .v-input.text-field--large label {
-        font-size: 36px !important;
-        height: 36px !important;
-        max-height: 50px !important;
-        line-height: 36px !important;
-        top: 0 !important;
-        font-weight: 200 !important;
-    }
-
-    .v-input.text-field--medium input,
-    .v-input.text-field--medium label {
-        font-size: 26px !important;
-        height: 26px !important;
-        max-height: 40px !important;
-        line-height: 26px !important;
-        top: 0 !important;
-        font-weight: 200 !important;
-    }
-
-    .v-input.text-field--large:not(.v-input--is-focused),
-    .v-input.text-field--medium:not(.v-input--is-focused) {
-        & > .v-input__control > .v-input__slot:before,
-        & > .v-input__control > .v-input__slot:after,
-        & > .v-input__control > .v-input__slot > input {
-            border-color: transparent;
-        }
-    }
 </style>

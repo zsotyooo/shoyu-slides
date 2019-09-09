@@ -1,12 +1,17 @@
 import { MutationTree } from 'vuex';
+import _ from 'lodash';
 import { AuthUser, AuthState } from '../types';
 
 export const mutations: MutationTree<AuthState> = {
     setAuthUser(state, payload: AuthUser | null) {
-        state.user = payload;
+        if (!_.isEqual({...state.user}, {...payload})) {
+            state.user = payload;
+        }
     },
 
     removeAuthUser(state) {
-        state.user = null;
+        if (state.user !== null) {
+            state.user = null;
+        }
     },
 };

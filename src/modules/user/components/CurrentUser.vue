@@ -1,6 +1,6 @@
 <template>
     <v-list-item v-if="isLoggedIn">
-        <v-list-item-avatar v-if="photoUrl" color="grey darken-3">
+        <v-list-item-avatar v-if="photoUrl">
             <v-img
                 :error="error = true"
                 class="elevation-6"
@@ -45,7 +45,7 @@ export default class CurrentUser extends Vue {
     }
 
     get displayName() {
-        return this.currentUser ? this.currentUser.displayName || 'no name' : '';
+        return this.currentUser ? this.currentUser.displayName || 'no name' : 'XXX';
     }
 }
 </script>

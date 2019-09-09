@@ -8,7 +8,7 @@ export default [
         path: '/logout',
         name: 'logout',
         component: () => import(/* webpackChunkName: "login" */ '@/modules/auth/views/Login.vue'),
-        props: {
+        meta: {
             logout: true,
         },
     },

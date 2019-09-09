@@ -1,0 +1,52 @@
+.v-input.text-field--large input,
+.v-input.text-field--large label {
+    font-size: 36px !important;
+    height: 36px !important;
+    max-height: 50px !important;
+    line-height: 36px !important;
+    top: 0 !important;
+    font-weight: 200 !important;
+}
+
+.v-input.text-field--medium input,
+.v-input.text-field--medium label {
+    font-size: 26px !important;
+    height: 26px !important;
+    max-height: 40px !important;
+    line-height: 26px !important;
+    top: 0 !important;
+    font-weight: 200 !important;
+}
+
+.v-input.text-field--normal input,
+.v-input.text-field--normal label {
+    font-size: 20px !important;
+    height: 20px !important;
+    max-height: 20px !important;
+    line-height: 20px !important;
+    top: 0 !important;
+    font-weight: 300 !important;
+}
+
+.v-input.text-field--normal {
+    position: relative;
+    .v-text-field__details {
+        position: absolute;
+        bottom: -5px;
+        // .error--text {
+        //     padding: 0 5px;
+        //     background: #ff5722;
+        //     color: #fff !important;
+        // }
+    }
+}
+
+.v-input.text-field--large:not(.v-input--is-focused),
+.v-input.text-field--medium:not(.v-input--is-focused),
+.v-input.text-field--normal:not(.v-input--is-focused) {
+    & > .v-input__control > .v-input__slot:before,
+    & > .v-input__control > .v-input__slot:after,
+    & > .v-input__control > .v-input__slot > input {
+        border-color: transparent;
+    }
+}

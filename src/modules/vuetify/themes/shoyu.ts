@@ -1,5 +1,6 @@
 import { VuetifyPreset } from 'vuetify/types/presets';
 import './dark.scss';
+import './text-field-custom.scss';
 
 const dark: VuetifyPreset = {
     theme: {

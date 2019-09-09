@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <slot></slot>
-    <v-snackbar v-model="showError" bottom color="error" multi-line>
+    <v-snackbar :value="showError" bottom color="error" multi-line>
         {{ error }}
     </v-snackbar>
-    <v-snackbar v-model="showSuccess" bottom color="success" multi-line>
+    <v-snackbar :value="showSuccess" bottom color="success" multi-line>
         {{ success }}
     </v-snackbar>
     <v-overlay :value="showLoader">

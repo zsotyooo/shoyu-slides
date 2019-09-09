@@ -42,9 +42,11 @@ export interface Slide {
 
 export interface MdSlide extends Slide {
     content: string;
+    animationIn: string;
+    animationOut: string;
 }
 
-export interface Slideshow {
+export interface Slideshow<S extends Slide = Slide> {
     id?: string;
     imageUrl: string;
     isPublished: boolean;
@@ -52,7 +54,7 @@ export interface Slideshow {
     title: string;
     type: SlideshowType;
     uid: string;
-    slides: Slide[];
+    slides: S[];
     createdAt: firebase.firestore.FieldValue | null;
     updatedAt: firebase.firestore.FieldValue | null;
 }

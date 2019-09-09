@@ -4,6 +4,13 @@ module.exports = {
           .symlinks(true)
       return config
     },
+    configureWebpack: {
+      performance: {
+          hints: false,
+          maxEntrypointSize: 512000,
+          maxAssetSize: 512000
+      },
+    },
     pwa: {
       workboxOptions: {
         exclude: [

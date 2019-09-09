@@ -113,3 +113,21 @@ export const createSlideshowObject = (data: Partial<Slideshow>): Slideshow => {
         updatedAt: now,
     };
 };
+
+export const revealAnimationsIn = [
+    'slide-in',
+    'fade-in',
+    'convex-in',
+    'concave-in',
+    'zoom-in',
+    'none',
+];
+
+export const revealAnimationsOut = [
+    'slide-out',
+    'fade-out',
+    'convex-out',
+    'concave-out',
+    'zoom-out',
+    'none',
+];

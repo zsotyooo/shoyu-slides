@@ -1,6 +1,11 @@
 <template>
     <div class="login">
         <admin-layout-logo>
+            <template v-if="isLoggedIn">
+                <v-subheader>Signed in as</v-subheader>
+                <v-divider></v-divider>
+                <current-user />
+            </template>
             <v-subheader>Sign in or register with one click</v-subheader>
             <v-divider></v-divider>
             <login-with-google></login-with-google>
@@ -26,15 +31,18 @@
 <script lang="ts">
 import { Component, Emit, Ref, Vue, Watch, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import CurrentUser from '@/modules/user/components/CurrentUser.vue';
 import LoginWithGoogle from '../components/LoginWithGoogle.vue';
 import LoginWithFacebook from '../components/LoginWithFacebook.vue';
 import LoginWithEmail from '../components/LoginWithEmail.vue';
 import RegisterWithEmail from '../components/RegisterWithEmail.vue';
+import { AuthUser } from '../types';
 
-const { Action, Getter } = namespace('auth');
+const { Getter } = namespace('auth');
 
 @Component({
     components: {
+        CurrentUser,
         LoginWithGoogle,
         LoginWithFacebook,
         LoginWithEmail,
@@ -44,13 +52,13 @@ const { Action, Getter } = namespace('auth');
 export default class Login extends Vue {
     @Prop({ default: false }) public logout?: boolean;
 
-    @Action private signOutAction!: () => void;
-
     @Getter private isLoggedIn!: boolean;
+    @Getter private authUser!: AuthUser | null;
 
-    public mounted() {
-        if (this.logout) {
-            this.signOutAction();
+    @Watch('authUser')
+    public onAuthUserChanged(user: AuthUser | null) {
+        if (user) {
+            this.$router.push('/admin/slideshows');
         }
     }
 

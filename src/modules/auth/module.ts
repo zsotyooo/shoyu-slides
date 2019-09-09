@@ -21,6 +21,14 @@ export default () => ({
         ]);
 
         router.beforeEach((to, from, next) => {
+            const doLogout = to.matched.some((record) => record.meta.logout);
+            if (doLogout && !store.getters['auth/isLoggedIn']) {
+                store.dispatch('auth/signOutAction');
+                next('login');
+            } else {
+                next();
+            }
+
             const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
             store.dispatch('auth/syncAuthUserAction');
             if (requiresAuth && !store.getters['auth/isLoggedIn']) {

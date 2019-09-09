@@ -26,12 +26,6 @@ export default () => ({
         router.beforeEach((to, from, next) => {
             if (to.params.slideshowId) {
                 store.dispatch('slideshow/fetchCurrentSlideshowAction', to.params.slideshowId);
-                // .then(() => {
-                //     next();
-                // })
-                // .catch(() => {
-                //     next();
-                // });
             } else {
                 store.dispatch('slideshow/removeCurrentSlideshowAction');
             }
