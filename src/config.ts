@@ -3,6 +3,7 @@ import { BootstrapConfig } from '@/core';
 import { FirebaseUserService } from '@/modules/user/services/FirebaseUserService';
 import { FirebaseAuthService } from '@/modules/auth/services/FirebaseAuthService';
 import { FirebaseSlideshowService } from '@/modules/slideshow/services/FirebaseSlideshowService';
+import { FirebaseMediaService } from '@/modules/media/services/FirebaseMediaService';
 import { AdminAppStateService } from '@/modules/admin/services/AdminAppStateService';
 import core from '@/core/module';
 import pwa from '@/modules/pwa/module';
@@ -16,6 +17,7 @@ import user from '@/modules/user/module';
 import pages from '@/modules/pages/module';
 
 import slideshow from '@/modules/slideshow/module';
+import media from '@/modules/media/module';
 
 
 export const modules: BootstrapConfig[] = [
@@ -56,12 +58,18 @@ export const modules: BootstrapConfig[] = [
         ],
     },
     {
-        module: pages(),
-    },
-    {
         module: slideshow(),
         services: [
             { id: 'slideshowService', service: FirebaseSlideshowService },
         ],
+    },
+    {
+        module: media(),
+        services: [
+            { id: 'mediaService', service: FirebaseMediaService },
+        ],
+    },
+    {
+        module: pages(),
     },
 ];

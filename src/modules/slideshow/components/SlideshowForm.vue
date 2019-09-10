@@ -28,8 +28,11 @@
                                     v-model="theme"
                                 />
                             </v-col>
-                            <v-col cols="12" md="8">
-                                <v-text-field label="Background image URL" v-model="imageUrl"/>
+                            <v-col cols="12" md="8" class="d-flex flex-row">
+                                <v-text-field label="Background image URL" v-model="imageUrl" class="flex-grow-1"/>
+                                <div class="flex-grow-0 ml-4 mt-4">
+                                    <MediaCenterPopup @select="setImageUrl"/>
+                                </div>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -213,6 +216,7 @@ import { Slide, Slideshow, slideshowTypes, SlideshowThemeDetials, SlideshowTypeD
     createSlideshowObject, slideshowService, revealAnimationsIn, revealAnimationsOut} from '..';
 
 import EditableTitleCard from '@/modules/admin/components/EditableTitleCard.vue';
+import MediaCenterPopup from '@/modules/media/views/MediaCenterPopup.vue';
 import SlideThemePreview from './SlideThemePreview.vue';
 import SlideshowThemeSelect from './SlideshowThemeSelect.vue';
 import SlideshowTypeSelect from './SlideshowTypeSelect.vue';
@@ -231,6 +235,7 @@ const { Action, Getter} = namespace('slideshow');
         SlideshowThemeSelect,
         Draggable,
         Editor,
+        MediaCenterPopup,
     },
 })
 export default class SlideshowForm extends Vue {
@@ -364,6 +369,10 @@ export default class SlideshowForm extends Vue {
         //      this.currentSlideIndex = -1;
         //  }
          this.slides.splice(pos, 1);
+     }
+
+     private setImageUrl(url: string) {
+         this.imageUrl = url;
      }
 }
 </script>

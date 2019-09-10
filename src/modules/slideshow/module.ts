@@ -4,7 +4,7 @@ import { storeConfig } from './store';
 
 export default () => ({
     name: 'slideshow',
-    dependencies: ['vuetify', 'admin'],
+    dependencies: ['vuetify', 'admin', 'auth'],
     setup: (app: Application) => {
         const store = app.getStore();
         const router = app.getRouter();
