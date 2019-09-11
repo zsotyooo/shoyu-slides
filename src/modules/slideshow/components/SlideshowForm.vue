@@ -134,57 +134,7 @@
                         />
                     </div>
                 </div>
-                <v-navigation-drawer right :mini-variant="isSlidesMini" color="info elevation-4" permanent style="min-width: 80px">
-                    <div class="edit-slides__sidebar-scroll px-0">
-                        <v-list avatar dark rounded>
-                            <v-list-item-group>
-                                <Draggable 
-                                    :list="slides"
-                                    ghost-class="is-ghost"
-                                    chosen-class="is-chosen"
-                                    drag-class="is-drag"
-                                    class="mini-slides"
-                                >
-                                    <transition-group>
-                                        <v-list-item
-                                            active-class="warning"
-                                            v-for="(slide, i) in slides" :key="`minislide_${i}`"
-                                            class="mini-slides__item"
-                                            @click.stop="switchToSlide(i)"
-                                        >
-                                            <v-list-item-avatar color="white info--text">
-                                                <strong>{{ i + 1 }}</strong>
-                                            </v-list-item-avatar>
-                                            <v-list-item-content>
-                                                <v-list-item-title v-html="slide.name"></v-list-item-title>
-                                            </v-list-item-content>
-                                            <v-list-item-icon>
-                                                <v-icon>mdi-drag</v-icon>
-                                            </v-list-item-icon>
-                                        </v-list-item>
-                                    </transition-group>
-                                </Draggable>
-                            </v-list-item-group>
-                        </v-list>
-                    </div>
-                    <template #append>
-                        <v-list rounded dense dark color="info darken-2">
-                            <v-list-item @click.stop="addNewSlide">
-                                <v-list-item-action>
-                                    <v-icon>mdi-plus</v-icon>
-                                </v-list-item-action>
-                                <v-list-item-title>add slide</v-list-item-title>
-                            </v-list-item>
-                        
-                            <v-list-item @click="isSlidesMini = !isSlidesMini">
-                                <v-list-item-action>
-                                    <v-icon>{{ isSlidesMini ? 'mdi-backburger' : 'mdi-forwardburger' }}</v-icon>
-                                </v-list-item-action>
-                                <v-list-item-title>collapse slides</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </template>
-                </v-navigation-drawer>
+                <SlideSidebar ref="slideSidebar" v-model="slides" @switched="setCurrentSlideIndex" />
             </div>
             <div class="edit-panel__toolbar">
                 <v-divider />
@@ -214,16 +164,17 @@ import 'tui-editor/dist/tui-editor-contents.css';
 import 'codemirror/lib/codemirror.css';
 import hljs from 'highlight.js';
 import { AuthUser } from '@/modules/auth';
-import { SlideshowType, SlideshowDocument, MdSlide } from '../types';
-import { Slide, Slideshow, slideshowTypes, SlideshowThemeDetials, SlideshowTypeDetials, slideshowThemes,
-    createSlideshowObject, slideshowService, revealAnimationsIn, revealAnimationsOut} from '..';
-
+import { SlideshowType, SlideshowDocument, MdSlide, Slideshow, slideshowTypes,
+    SlideshowThemeDetials, SlideshowTypeDetials, slideshowThemes, createSlideshowObject,
+    slideshowService, revealAnimationsIn, revealAnimationsOut} from '..';
+import Draggable from 'vuedraggable';
 import EditableTitleCard from '@/modules/admin/components/EditableTitleCard.vue';
 import MediaCenterPopup from '@/modules/media/views/MediaCenterPopup.vue';
 import SlideThemePreview from './SlideThemePreview.vue';
 import SlideshowThemeSelect from './SlideshowThemeSelect.vue';
 import SlideshowTypeSelect from './SlideshowTypeSelect.vue';
-import Draggable from 'vuedraggable';
+import SlideSidebar from './SlideSidebar.vue';
+
 
 import { Editor } from '@toast-ui/vue-editor';
 
@@ -239,9 +190,40 @@ const { Action, Getter} = namespace('slideshow');
         Draggable,
         Editor,
         MediaCenterPopup,
+        SlideSidebar,
     },
 })
 export default class SlideshowForm extends Vue {
+    @Ref() private readonly form!: Vue & { validate: () => boolean, reset: () => void };
+    @Ref() private readonly slideSidebar!: Vue & {
+        addNewSlide: () => void,
+        switchToSlide: (index: number) => void,
+        deleteCurrentSlide: () => void,
+    };
+
+    @Action private addSlideshowAction!: (payload: Slideshow) => void;
+    @Action private updateSlideshowAction!: (payload: SlideshowDocument) => void;
+
+    @authNs.Getter private readonly authUser!: AuthUser;
+    @Getter private readonly currentSlideshow!: Slideshow<MdSlide> | null;
+
+    private deleteDialog = false;
+    private helpDialog = false;
+    private currentSlideIndex = -1;
+    private valid = true;
+    private type: SlideshowTypeDetials = slideshowTypes[0];
+    private theme: SlideshowThemeDetials = slideshowThemes[0];
+    private imageUrl = '';
+    private title = '';
+    private settingsOpened = false;
+    private id: string | undefined = undefined;
+    private slides: MdSlide[] = [];
+    private animationsIn = revealAnimationsIn;
+    private animationsOut = revealAnimationsOut;
+
+    private requiredRules = [
+      (v: string) => !!v || 'Field is  required',
+    ];
 
     get typeSelectOptions() {
         return slideshowTypes;
@@ -251,42 +233,11 @@ export default class SlideshowForm extends Vue {
         return slideshowThemes;
     }
 
-    @Action public addSlideshowAction!: (payload: Slideshow) => void;
-    @Action public updateSlideshowAction!: (payload: SlideshowDocument) => void;
-    @Ref() private readonly form!: Vue & { validate: () => boolean, reset: () => void };
-
-    @authNs.Getter private readonly authUser!: AuthUser;
-    @Getter private readonly currentSlideshow!: Slideshow<MdSlide> | null;
-
-    private isSlidesMini = false;
-
-    private deleteDialog = false;
-    private helpDialog = false;
-
-    private currentSlideIndex = -1;
-
-    private valid = true;
-
-    private type: SlideshowTypeDetials = slideshowTypes[0];
-    private theme: SlideshowThemeDetials = slideshowThemes[0];
-    private imageUrl = '';
-    private title = '';
-    private settingsOpened = false;
-    private id: string | undefined = undefined;
-    private slides: MdSlide[] = [];
-
-    private animationsIn = revealAnimationsIn;
-    private animationsOut = revealAnimationsOut;
-
-    private requiredRules = [
-      (v: string) => !!v || 'Field is  required',
-    ];
-
-     public mounted() {
-         if (this.currentSlideshow) {
-             this.setSlideshow(this.currentSlideshow);
-         }
-     }
+    public mounted() {
+        if (this.currentSlideshow) {
+            this.setSlideshow(this.currentSlideshow);
+        }
+    }
 
     private save() {
         this.doSave(false);
@@ -296,8 +247,8 @@ export default class SlideshowForm extends Vue {
         this.doSave(true);
     }
 
-     private async doSave(publish: boolean) {
-         if (this.form.validate()) {
+    private async doSave(publish: boolean) {
+        if (this.form.validate()) {
             const payload = createSlideshowObject({
                 title: this.title,
                 type: this.type.type,
@@ -305,7 +256,7 @@ export default class SlideshowForm extends Vue {
                 imageUrl: this.imageUrl,
                 isPublished: publish,
                 uid: this.authUser.uid,
-                slides: this.slides.map((s: Slide, i) => ({ ...s, order: i })),
+                slides: this.slides.map((s: MdSlide, i) => ({ ...s, order: i })),
             });
             if (this.id) {
                 payload.id = this.id;
@@ -318,106 +269,46 @@ export default class SlideshowForm extends Vue {
                 this.$router.push(`/admin/slideshows/${this.currentSlideshow.id}/edit`);
             }
         }
-     }
+    }
 
-     @Watch('currentSlideshow')
-     private onCurrentSlideshowChange(val: Slideshow<MdSlide> | null) {
-         if (val) {
-             this.setSlideshow(val);
-         }
-     }
+    @Watch('currentSlideshow')
+    private onCurrentSlideshowChange(val: Slideshow<MdSlide> | null) {
+        if (val) {
+            this.setSlideshow(val);
+        }
+    }
 
-     private setSlideshow(val: Slideshow<MdSlide>) {
-         const slideshow = { ...val };
-         this.title = slideshow.title;
-         this.type = this.typeSelectOptions.find((t) => t.type === slideshow.type) as SlideshowTypeDetials;
-         this.theme = this.themeSelectOptions.find((t) => t.theme === slideshow.theme) as SlideshowThemeDetials;
-         this.imageUrl = slideshow.imageUrl;
-         this.slides = slideshow.slides;
-         if (this.slides.length === 0) {
-             this.addNewSlide();
-         } else {
-             this.switchToSlide(this.slides.length - 1);
-         }
-         this.id = slideshow.id || undefined;
-     }
+    private setSlideshow(val: Slideshow<MdSlide>) {
+        const slideshow = { ...val };
+        this.title = slideshow.title;
+        this.type = this.typeSelectOptions.find((t) => t.type === slideshow.type) as SlideshowTypeDetials;
+        this.theme = this.themeSelectOptions.find((t) => t.theme === slideshow.theme) as SlideshowThemeDetials;
+        this.imageUrl = slideshow.imageUrl;
+        this.slides = slideshow.slides;
+        if (this.slides.length === 0) {
+            this.slideSidebar.addNewSlide();
+        } else {
+            this.slideSidebar.switchToSlide(this.slides.length - 1);
+        }
+        this.id = slideshow.id || undefined;
+    }
 
-     private addNewSlide() {
-         this.slides.push({
-             name: `Slide #${this.slides.length + 1}`,
-             content: '',
-             order: this.slides.length,
-             animationIn: 'slide-in',
-             animationOut: 'slide-out',
-         });
-         this.switchToSlide(this.slides.length - 1);
-     }
+    private setImageUrl(url: string) {
+        this.imageUrl = url;
+    }
 
-     private switchToSlide(index: number) {
-         this.currentSlideIndex = index;
-         setTimeout(() => {
-             if (document.querySelectorAll('.mini-slides__item').item(index)) {
-                // document.querySelectorAll('.mini-slides__item').item(index).scrollIntoView();
-            }
-         }, 100);
+    private setCurrentSlideIndex(index: number) {
+        this.currentSlideIndex = index;
+    }
 
-     }
-
-     private deleteCurrentSlide() {
-         const pos = this.currentSlideIndex;
-        //  if (this.slides.length === 1) {
-         this.currentSlideIndex = -1;
-        //  }
-        //  if (this.slides.length === this.currentSlideIndex) {
-        //      this.currentSlideIndex = -1;
-        //  }
-         this.slides.splice(pos, 1);
-     }
-
-     private setImageUrl(url: string) {
-         this.imageUrl = url;
-     }
+    private deleteCurrentSlide() {
+        this.slideSidebar.deleteCurrentSlide();
+    }
 }
 </script>
 
 <style lang="scss">
-    
     .edit-panel {
         height: calc(100vh - 88px);
-    }
-
-    .edit-slides {
-        &__sidebar {
-            position: relative;
-        }
-
-        &__sidebar-scroll {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 116px;
-            left: 0;
-            overflow: scroll;
-        }
-    }
-
-    .mini-slides {
-        &__item {
-            border: 1px solid #fff;
-            margin-right: 8px;
-            &.is-ghost {
-                border: 1px dotted #fff;
-                opacity: 0.2;
-            }
-        }
-    }
-
-    .hover-show {
-        overflow: hidden;
-        width: 0;
-        transition: all 0.1s ease-in;
-        .v-btn:hover & {
-            width: 100%;   
-        }
     }
 </style>
