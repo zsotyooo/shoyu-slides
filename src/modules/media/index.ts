@@ -1,5 +1,4 @@
-import firebase from 'firebase/app';
-import { services } from '@/core';
+import { services } from '@/core/di';
 import { MediaService } from './types';
 
 export * from './types';

@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { MediaState } from '..';
 import { getters } from './getters';
 import { mutations } from './mutations';

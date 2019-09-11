@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { Commit } from 'vuex';
-import { Application } from '@/core';
+import { Application } from '@/core/app';
 import { AppStateService } from '@/modules/app';
 
 @injectable()

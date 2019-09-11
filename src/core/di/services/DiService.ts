@@ -1,5 +1,5 @@
 import { Container } from 'inversify';
-import { Application, Module } from '..';
+import { Application, Module } from '@/core/app';
 
 export class DiService {
     private installedModules: string[] = [];

@@ -1,11 +1,11 @@
 
-import { BootstrapConfig } from '@/core';
+import { BootstrapConfig } from '@/core/app';
 import { FirebaseUserService } from '@/modules/user/services/FirebaseUserService';
 import { FirebaseAuthService } from '@/modules/auth/services/FirebaseAuthService';
 import { FirebaseSlideshowService } from '@/modules/slideshow/services/FirebaseSlideshowService';
 import { FirebaseMediaService } from '@/modules/media/services/FirebaseMediaService';
 import { AdminAppStateService } from '@/modules/admin/services/AdminAppStateService';
-import core from '@/core/module';
+import core from '@/core/app/module';
 import pwa from '@/modules/pwa/module';
 import bodymovin from '@/modules/bodymovin/module';
 import vuetify from '@/modules/vuetify/module';

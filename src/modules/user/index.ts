@@ -1,4 +1,4 @@
-import { services } from '@/core';
+import { services } from '@/core/di';
 import { UserService } from './types';
 
 export * from './types';

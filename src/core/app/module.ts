@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import Router from 'vue-router';
 import { storeConfig } from './store';
-import { RootState, Application, services } from '.';
+import { RootState, Application } from '.';
 
 export default () => ({
     name: 'core',

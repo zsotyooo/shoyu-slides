@@ -1,6 +1,5 @@
-export * from './types';
-import { services } from '@/core';
+import { services } from '@/core/di';
 import { AppStateService } from './types';
+export * from './types';
 
-// console.log(services);
 export const appStateService = () => services.getService<AppStateService>('appStateService');

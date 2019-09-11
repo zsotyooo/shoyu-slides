@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { AdminState, MenuItem, AdminStatus } from '..';
 
 export const getters: GetterTree<AdminState, RootState> = {

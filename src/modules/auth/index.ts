@@ -1,4 +1,4 @@
-import { services } from '@/core';
+import { services } from '@/core/di';
 import { AuthService } from './types';
 
 export * from './types';

@@ -1,9 +1,8 @@
-export * from './types';
-import { Container } from 'inversify';
-import { DiService } from './services/DiService';
-import { Module, Application, BootstrapConfig } from './types';
+import { services } from '@/core/di';
+import { Application, BootstrapConfig } from './types';
 
-export const services = new DiService(new Container({ defaultScope: 'Singleton' }));
+export * from './types';
+export * from './apps/SinglePageApp';
 
 export const bootstrap = (
     AppClass: new (...args: any[]) => Application,

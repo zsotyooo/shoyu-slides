@@ -2,9 +2,10 @@ import { injectable } from 'inversify';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { Store } from 'vuex';
-import { Application, RootState, services } from '..';
+import { services } from '@/core/di';
 import { authService } from '@/modules/auth';
-import AppComponent from '@/core/App.vue';
+import { Application, RootState } from '..';
+import AppComponent from '../App.vue';
 
 @injectable()
 export class SinglePageApp implements Application {

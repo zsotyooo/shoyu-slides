@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { Application } from '@/core';
+import { Application } from '@/core/app';
 import { storeConfig } from './store';
 import LayoutEmpty from './layouts/LayoutEmpty.vue';
 import LayoutLogo from './layouts/LayoutLogo.vue';

@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { MediaState } from '..';
 
 export const getters: GetterTree<MediaState, RootState> = {

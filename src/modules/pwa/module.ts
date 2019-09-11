@@ -1,4 +1,4 @@
-import { Application } from '@/core';
+import { Application } from '@/core/app';
 import registerServiceWorker from './registerServiceWorker';
 
 export default () => ({

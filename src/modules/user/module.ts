@@ -1,5 +1,5 @@
 import { storeConfig } from './store';
-import { Application } from '@/core';
+import { Application } from '@/core/app';
 import { authService } from '@/modules/auth';
 
 export default () => ({

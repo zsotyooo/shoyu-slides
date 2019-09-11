@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { services } from '@/core';
+import { services } from '@/core/di';
 import { SlideshowService, SlideshowTypeDetials, SlideshowThemeDetials, Slideshow } from './types';
 
 export * from './types';

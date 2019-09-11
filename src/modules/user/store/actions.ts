@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import { AuthUser } from '@/modules/auth/types';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { User, UserState, UserService } from '../types';
 import { userService } from '..';
 

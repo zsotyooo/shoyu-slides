@@ -1,6 +1,6 @@
 import { ActionTree, Commit } from 'vuex';
 import { AuthUser, authService } from '@/modules/auth';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { appStateService } from '@/modules/app';
 import { MediaState, mediaService } from '..';
 

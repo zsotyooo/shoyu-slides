@@ -1,5 +1,5 @@
 import { ActionTree, Commit } from 'vuex';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { authService, AuthState, EmailPasswordCredentials } from '..';
 import { appStateService } from '@/modules/app';
 

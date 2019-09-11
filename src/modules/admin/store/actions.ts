@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { RootState } from '@/core';
+import { RootState } from '@/core/app';
 import { AdminState, MenuItem, AdminStatus } from '..';
 
 export const actions: ActionTree<AdminState, RootState> = {

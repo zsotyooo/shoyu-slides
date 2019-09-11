@@ -1,4 +1,4 @@
-import { Application } from '@/core';
+import { Application } from '@/core/app';
 import firebaseServices from './services/FirebaseServices';
 import config from './config';
 
