@@ -3,7 +3,7 @@
         id="app-drawer"
         v-model="drawerValue"
         app
-        color="primary darken-1"
+        color="primary"
         dark
         floating
         mobile-break-point="991"        

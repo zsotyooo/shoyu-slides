@@ -16,7 +16,7 @@
                     v-if="isCloseable"
                     large
                     icon
-                    color="accent"
+                    color="dark"
                     :class="`editable-title-card__button ml-6 ${isOpen ? 'is-open' : ''}`"
                     @click.stop="isOpen = !isOpen"
                 >

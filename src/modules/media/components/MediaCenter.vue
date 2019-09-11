@@ -27,7 +27,7 @@
                             <v-divider />
                             <v-row>
                                 <v-col
-                                    v-for="(f,i) in filesToUpload"
+                                    v-for="f in filesToUpload"
                                     :key="`ftu_${f.id}`"
                                     cols="4"
                                     sm="2"
@@ -136,7 +136,7 @@
                                                     <v-overlay
                                                         v-if="hover"
                                                         absolute
-                                                        color="#036358"
+                                                        color="dark"
                                                     >
                                                         <v-btn @click.stop="$emit('select', url)">select</v-btn>
                                                     </v-overlay>

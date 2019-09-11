@@ -31,7 +31,7 @@
                             <v-col cols="12" md="8" class="d-flex flex-row">
                                 <v-text-field label="Background image URL" v-model="imageUrl" class="flex-grow-1"/>
                                 <div class="flex-grow-0 ml-4 mt-4">
-                                    <MediaCenterPopup @select="setImageUrl"/>
+                                    <MediaCenterPopup @select="setImageUrl" buttonColor="secondary" />
                                 </div>
                             </v-col>
                         </v-row>
@@ -39,13 +39,13 @@
                 </EditableTitleCard>
                 <v-divider />
             </div>
-            <v-row class="edit-panel__slides flex-grow-1 d-flex flew-row edit-slides pl-2">
+            <div class="edit-panel__slides flex-grow-1 d-flex flew-row edit-slides pl-2">
                 <div class="edit-slides__edit flex-grow-1 d-flex flew-column pl-0">
                     <v-divider vertical />
                     <div v-if="currentSlideIndex > -1" class="edit-slides__form d-flex flex-column flex-grow-1">
                         <div class="d-flex flex-row pl-8 pr-4">
                             <v-row class="flex-grow-1">
-                                <v-col cols="4">
+                                <v-col cols="12" md="4">
                                     <v-text-field
                                         v-model="slides[currentSlideIndex].name"
                                         :rules="requiredRules"
@@ -55,7 +55,7 @@
                                         required
                                     />
                                 </v-col>
-                                <v-col cols="4">
+                                <v-col cols="6" md="4">
                                     <v-select
                                         v-model="slides[currentSlideIndex].animationIn"
                                         :rules="requiredRules"
@@ -64,8 +64,8 @@
                                         prepend-icon="mdi-animation"
                                         required
                                     />
-                                    </v-col>
-                                <v-col cols="4">
+                                </v-col>
+                                <v-col cols="6" md="4">
                                     <v-select
                                         v-model="slides[currentSlideIndex].animationOut"
                                         :rules="requiredRules"
@@ -80,7 +80,7 @@
                                 <v-dialog v-model="helpDialog" persistent max-width="290">
                                     <template v-slot:activator="{ on }">
                                         <v-btn
-                                            color="grey"
+                                            color="warning"
                                             dark
                                             icon
                                             v-on="on"
@@ -134,9 +134,9 @@
                         />
                     </div>
                 </div>
-                <v-navigation-drawer right :mini-variant="isSlidesMini" color="grey lighten-1 elevation-8" permanent>
+                <v-navigation-drawer right :mini-variant="isSlidesMini" color="info elevation-4" permanent style="min-width: 80px">
                     <div class="edit-slides__sidebar-scroll px-0">
-                        <v-list avatar dark>
+                        <v-list avatar dark rounded>
                             <v-list-item-group>
                                 <Draggable 
                                     :list="slides"
@@ -147,17 +147,20 @@
                                 >
                                     <transition-group>
                                         <v-list-item
-                                            active-class="accent"
+                                            active-class="warning"
                                             v-for="(slide, i) in slides" :key="`minislide_${i}`"
                                             class="mini-slides__item"
                                             @click.stop="switchToSlide(i)"
                                         >
-                                            <v-list-item-avatar color="accent">
-                                                <strong>#{{ i + 1 }}</strong>
+                                            <v-list-item-avatar color="white info--text">
+                                                <strong>{{ i + 1 }}</strong>
                                             </v-list-item-avatar>
                                             <v-list-item-content>
                                                 <v-list-item-title v-html="slide.name"></v-list-item-title>
                                             </v-list-item-content>
+                                            <v-list-item-icon>
+                                                <v-icon>mdi-drag</v-icon>
+                                            </v-list-item-icon>
                                         </v-list-item>
                                     </transition-group>
                                 </Draggable>
@@ -165,7 +168,7 @@
                         </v-list>
                     </div>
                     <template #append>
-                        <v-list rounded dense dark color="grey">
+                        <v-list rounded dense dark color="info darken-2">
                             <v-list-item @click.stop="addNewSlide">
                                 <v-list-item-action>
                                     <v-icon>mdi-plus</v-icon>
@@ -182,7 +185,7 @@
                         </v-list>
                     </template>
                 </v-navigation-drawer>
-            </v-row>
+            </div>
             <div class="edit-panel__toolbar">
                 <v-divider />
                 <v-toolbar
@@ -192,7 +195,7 @@
                     bottom>
                     <v-row justify="center">
                         <div class="text-center">
-                            <v-btn color="primary" ripple @click.stop="save"><v-icon>mdi-content-save-outline</v-icon>Save</v-btn>
+                            <v-btn color="accent" ripple @click.stop="save"><v-icon>mdi-content-save-outline</v-icon>Save</v-btn>
                             <!-- <v-btn color="accent" ripple @click.stop="log" class="ml-2"><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish</v-btn> -->
                         </div>
                     </v-row>
@@ -392,7 +395,7 @@ export default class SlideshowForm extends Vue {
             position: absolute;
             top: 0;
             right: 0;
-            bottom: 125px;
+            bottom: 116px;
             left: 0;
             overflow: scroll;
         }
@@ -400,7 +403,10 @@ export default class SlideshowForm extends Vue {
 
     .mini-slides {
         &__item {
+            border: 1px solid #fff;
+            margin-right: 8px;
             &.is-ghost {
+                border: 1px dotted #fff;
                 opacity: 0.2;
             }
         }

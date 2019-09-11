@@ -48,11 +48,11 @@
                                 <v-icon>mdi-checkbox-marked-circle-outline</v-icon>publish
                             </v-btn>
                         </transition> -->
-                        <v-btn ripple depressed text color="primary" class="ml-2" :to="`/admin/slideshows/${item.id}/edit`">
+                        <v-btn ripple depressed text color="accent" :to="`/admin/slideshows/${item.id}/edit`">
                             <v-icon>mdi-circle-edit-outline</v-icon>edit
                         </v-btn>
-                        <v-btn :to="`/s/${item.id}`" ripple depressed rounded icon color="accent" class="ml-2">
-                            <v-icon>mdi-eye</v-icon>
+                        <v-btn :to="`/s/${item.id}`" ripple text color="accent">
+                            <v-icon>mdi-eye</v-icon>view
                         </v-btn>
                     </template>
 
@@ -61,7 +61,7 @@
                         <div class="text-right">
                             <!-- <v-btn color="accent" ripple><v-icon>mdi-checkbox-marked-circle-outline</v-icon>Publish selection</v-btn>
                             <v-btn color="error" outlined ripple>Unpublish selection</v-btn> -->
-                            <v-btn to="/admin/slideshows/new" rounded color="primary" ripple class="mb-3 mr-4"><v-icon>mdi-plus</v-icon>New slideshow</v-btn>
+                            <v-btn to="/admin/slideshows/new" rounded color="accent" ripple class="mb-3 mr-4"><v-icon>mdi-plus</v-icon>New slideshow</v-btn>
                         </div>
                     </template>
                 </v-data-table>

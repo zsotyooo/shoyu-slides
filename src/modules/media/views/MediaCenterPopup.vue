@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" scrollable>
         <template v-slot:activator="{ on }">
-            <v-btn color="primary" icon v-on="on">
+            <v-btn :color="buttonColor" icon v-on="on">
                 <v-icon>mdi-image</v-icon>
             </v-btn>
         </template>
@@ -14,7 +14,7 @@
             <v-divider />
             <v-card-actions>
                 <div class="text-center flex-grow-1">
-                    <v-btn color="accent" text @click="dialog = false">Close</v-btn>
+                    <v-btn color="secondary" text @click="dialog = false">Close</v-btn>
                 </div>
             </v-card-actions>
         </v-card>
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'vue-property-decorator';
+import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
 import MediaCenter from '../components/MediaCenter.vue';
 
 @Component({
@@ -30,7 +30,9 @@ import MediaCenter from '../components/MediaCenter.vue';
     MediaCenter,
   },
 })
-export default class MediaCenterPage extends Vue {
+export default class MediaCenterPopup extends Vue {
+    @Prop({ default: 'secondary' }) public readonly buttonColor!: string;
+
     private dialog = false;
 
     @Emit('select')

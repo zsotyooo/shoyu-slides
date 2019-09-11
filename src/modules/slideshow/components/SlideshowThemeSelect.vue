@@ -3,7 +3,6 @@
         :rules="requiredRules"
         :value="value"
         :items="themeSelectOptions"
-        :hint="`${value.description}`"
         label="Theme"
         item-text="name"
         item-value="theme"
