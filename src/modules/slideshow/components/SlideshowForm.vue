@@ -42,97 +42,11 @@
             <div class="edit-panel__slides flex-grow-1 d-flex flew-row edit-slides pl-2">
                 <div class="edit-slides__edit flex-grow-1 d-flex flew-column pl-0">
                     <v-divider vertical />
-                    <div v-if="currentSlideIndex > -1" class="edit-slides__form d-flex flex-column flex-grow-1">
-                        <div class="d-flex flex-row pl-8 pr-4">
-                            <v-row class="flex-grow-1">
-                                <v-col cols="12" md="4">
-                                    <v-text-field
-                                        v-model="slides[currentSlideIndex].name"
-                                        :rules="requiredRules"
-                                        label="Enter Slide name"
-                                        single-line
-                                        prepend-icon="mdi-rename-box"
-                                        required
-                                    />
-                                </v-col>
-                                <v-col cols="6" md="4">
-                                    <v-select
-                                        v-model="slides[currentSlideIndex].animationIn"
-                                        :rules="requiredRules"
-                                        :items="animationsIn"
-                                        single-line
-                                        prepend-icon="mdi-animation"
-                                        required
-                                    />
-                                </v-col>
-                                <v-col cols="6" md="4">
-                                    <v-select
-                                        v-model="slides[currentSlideIndex].animationOut"
-                                        :rules="requiredRules"
-                                        :items="animationsOut"
-                                        single-line
-                                        prepend-icon="mdi-animation-outline"
-                                        required
-                                    />
-                                </v-col>
-                            </v-row>
-                            <div class="mt-8 ml-4">
-                                <v-dialog v-model="helpDialog" persistent max-width="290">
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="warning"
-                                            dark
-                                            icon
-                                            v-on="on"
-                                        >
-                                            <v-icon>mdi-help-box</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <v-card>
-                                    <v-card-title class="headline">Help:</v-card-title>
-                                    <v-card-text>
-                                        <p>Use fragment: &lt;||&gt;</p>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <div class="flex-grow-1"></div>
-                                        <v-btn color="primary" text @click="helpDialog = false">Close</v-btn>
-                                    </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
-                                <v-dialog v-model="deleteDialog" persistent max-width="290">
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="error"
-                                            dark
-                                            icon
-                                            v-on="on"
-                                        >
-                                            <v-icon>mdi-delete</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <v-card>
-                                    <v-card-title class="headline">Delete slide</v-card-title>
-                                    <v-card-text>Do you really want to delete "{{slides[currentSlideIndex].name}}"?</v-card-text>
-                                    <v-card-actions>
-                                        <div class="flex-grow-1"></div>
-                                        <v-btn color="primary" text @click="deleteDialog = false">Cancel</v-btn>
-                                        <v-btn color="error" text @click="deleteDialog = false; deleteCurrentSlide()">DELETE</v-btn>
-                                    </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
-                            </div>
-                        </div>
-                        <Editor
-                            ref="editor"
-                            previewStyle="vertical"
-                            height="100%"
-                            :options="{
-                                previewStyle: 'vertical',
-                                initialEditType: 'markdown',
-                            }"
-                            v-model="slides[currentSlideIndex].content"
-                        />
-                    </div>
+                    <SlideEditor
+                        v-if="currentSlideIndex > -1"
+                        v-model="slides[currentSlideIndex]"
+                        @delete="deleteCurrentSlide"
+                    />
                 </div>
                 <SlideSidebar ref="slideSidebar" v-model="slides" @switched="setCurrentSlideIndex" />
             </div>
@@ -174,6 +88,7 @@ import SlideThemePreview from './SlideThemePreview.vue';
 import SlideshowThemeSelect from './SlideshowThemeSelect.vue';
 import SlideshowTypeSelect from './SlideshowTypeSelect.vue';
 import SlideSidebar from './SlideSidebar.vue';
+import SlideEditor from './SlideEditor.vue';
 
 
 import { Editor } from '@toast-ui/vue-editor';
@@ -191,6 +106,7 @@ const { Action, Getter} = namespace('slideshow');
         Editor,
         MediaCenterPopup,
         SlideSidebar,
+        SlideEditor,
     },
 })
 export default class SlideshowForm extends Vue {
@@ -218,24 +134,13 @@ export default class SlideshowForm extends Vue {
     private settingsOpened = false;
     private id: string | undefined = undefined;
     private slides: MdSlide[] = [];
-    private animationsIn = revealAnimationsIn;
-    private animationsOut = revealAnimationsOut;
-
-    private requiredRules = [
-      (v: string) => !!v || 'Field is  required',
-    ];
-
-    get typeSelectOptions() {
-        return slideshowTypes;
-    }
-
-    get themeSelectOptions() {
-        return slideshowThemes;
-    }
 
     public mounted() {
         if (this.currentSlideshow) {
             this.setSlideshow(this.currentSlideshow);
+        }
+        if (!this.$router.currentRoute.params.slideshowId) {
+            this.slideSidebar.addNewSlide();
         }
     }
 
@@ -281,8 +186,8 @@ export default class SlideshowForm extends Vue {
     private setSlideshow(val: Slideshow<MdSlide>) {
         const slideshow = { ...val };
         this.title = slideshow.title;
-        this.type = this.typeSelectOptions.find((t) => t.type === slideshow.type) as SlideshowTypeDetials;
-        this.theme = this.themeSelectOptions.find((t) => t.theme === slideshow.theme) as SlideshowThemeDetials;
+        this.type = slideshowTypes.find((t) => t.type === slideshow.type) as SlideshowTypeDetials;
+        this.theme = slideshowThemes.find((t) => t.theme === slideshow.theme) as SlideshowThemeDetials;
         this.imageUrl = slideshow.imageUrl;
         this.slides = slideshow.slides;
         if (this.slides.length === 0) {

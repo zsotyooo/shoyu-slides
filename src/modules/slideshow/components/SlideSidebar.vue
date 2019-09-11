@@ -9,7 +9,7 @@
     >
         <div class="slides-sidebar__scroll px-0">
             <v-list avatar dark rounded>
-                <v-list-item-group :value="currentSlideIndex">
+                <v-list-item-group :value="currentSlideIndex" mandatory>
                     <Draggable 
                         :list="slides"
                         ghost-class="is-ghost"
@@ -82,6 +82,10 @@ export default class SlideSidebar extends Vue {
     private requiredRules = [
       (v: string) => !!v || 'Field is required',
     ];
+
+    public mounted() {
+        this.onValueChange(this.value);
+    }
 
     @Emit('input')
     public addNewSlide() {

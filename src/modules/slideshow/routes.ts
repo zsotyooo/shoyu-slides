@@ -2,7 +2,7 @@ export default [
     {
         path: '/admin/slideshows/new',
         name: 'admin-slideshow-new',
-        component: () => import(/* webpackChunkName: "slideshow-edit" */ '@/modules/slideshow/views/Create.vue'),
+        component: () => import(/* webpackChunkName: "slideshow-edit" */ '@/modules/slideshow/views/Edit.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -10,7 +10,7 @@ export default [
     {
         path: '/admin/slideshows/:slideshowId/edit',
         name: 'admin-slideshow-edit',
-        component: () => import(/* webpackChunkName: "slideshow-edit" */ '@/modules/slideshow/views/Create.vue'),
+        component: () => import(/* webpackChunkName: "slideshow-edit" */ '@/modules/slideshow/views/Edit.vue'),
         meta: {
             requiresAuth: true,
         },
